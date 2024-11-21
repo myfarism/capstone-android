@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_chat"
+        android:title="Chat Bot"
+        android:icon="@drawable/ic_chat_bot"/>
+
+    <item
+        android:id="@+id/nav_beranda"
+        android:title="Beranda"
+        android:icon="@drawable/ic_beranda"/>
+
+    <item
+        android:id="@+id/nav_profil"
+        android:title="Profil"
+        android:icon="@drawable/ic_profil"/>
+
+</menu>

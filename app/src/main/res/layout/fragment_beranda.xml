@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:context=".fragment.BerandaFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                    <!-- Card 1 -->
+                    <LinearLayout
+                        android:layout_width="195dp"
+                        android:layout_height="259dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:padding="16dp"
+                        android:layout_marginEnd="25dp"
+                        android:background="@drawable/background_cream">
+
+                        <FrameLayout
+                            android:layout_width="166dp"
+                            android:layout_height="121dp"
+                            android:background="@drawable/background_white">
+
+                            <ImageView
+                                android:id="@+id/cat_image"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|start"
+                                android:layout_marginStart="-25dp"
+                                android:layout_marginTop="-3dp"
+                                app:srcCompat="@drawable/cat_home"/>
+
+                            <ImageView
+                                android:id="@+id/scan_icon"
+                                android:layout_width="29dp"
+                                android:layout_height="29dp"
+                                android:layout_gravity="end|bottom"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="8dp"
+                                app:srcCompat="@drawable/baseline_image_search_24"/>
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pindai"
+                            android:textSize="18sp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_marginTop="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pindai Penyakit Kucingmu dan dapatkan data untuk gejala dan pencegahannya!"
+                            android:textSize="12sp"
+                            android:textColor="#000000"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
+                    <!-- Card 2 -->
+                    <LinearLayout
+                        android:layout_width="195dp"
+                        android:layout_height="259dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:padding="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/background_green">
+
+                        <FrameLayout
+                            android:layout_width="166dp"
+                            android:layout_height="121dp"
+                            android:background="@drawable/background_white">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|start"
+                            android:layout_marginStart="-15dp"
+                            android:layout_marginTop="-10dp"
+                            app:srcCompat="@drawable/cat_home2"/>
+
+                            <ImageView
+                                android:id="@+id/history"
+                                android:layout_width="29dp"
+                                android:layout_height="29dp"
+                                android:layout_gravity="end|bottom"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginBottom="8dp"
+                                app:srcCompat="@drawable/baseline_manage_history_24"/>
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Riwayat"
+                            android:textSize="18sp"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:layout_marginTop="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Pindai Penyakit Kucingmu dan dapatkan data untuk gejala dan pencegahannya!"
+                            android:textSize="12sp"
+                            android:textColor="#000000"
+                            android:gravity="center"
+                            android:layout_marginTop="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
