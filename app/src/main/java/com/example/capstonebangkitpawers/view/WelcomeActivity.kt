@@ -17,11 +17,17 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.capstonebangkitpawers.databinding.ActivityWelcomeBinding
 import com.example.capstonebangkitpawers.login.LoginActivity
+import com.example.capstonebangkitpawers.main.MainActivity
 import com.example.capstonebangkitpawers.register.RegisterActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.auth
 
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWelcomeBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,10 +74,10 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        binding.buttonMasuk.setOnClickListener {
+        binding.btnMasuk.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
-            ///intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            //startActivity(intent)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
     }
@@ -83,7 +89,7 @@ class WelcomeActivity : AppCompatActivity() {
             repeatMode = ObjectAnimator.REVERSE
         }.start()
 
-        val login = ObjectAnimator.ofFloat(binding.buttonMasuk, View.ALPHA, 1f).setDuration(100)
+        val login = ObjectAnimator.ofFloat(binding.btnMasuk, View.ALPHA, 1f).setDuration(100)
         val signup = ObjectAnimator.ofFloat(binding.eclipse, View.ALPHA, 1f).setDuration(100)
         val title = ObjectAnimator.ofFloat(binding.tvRegister, View.ALPHA, 1f).setDuration(100)
 

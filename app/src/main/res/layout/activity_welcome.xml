@@ -32,7 +32,7 @@
         android:scaleType="fitXY"/>
 
     <ImageView
-        android:id="@+id/button_masuk"
+        android:id="@+id/btnMasuk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/button_main"

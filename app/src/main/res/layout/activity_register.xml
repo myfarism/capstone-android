@@ -244,10 +244,10 @@
             android:layout_height="58dp">
 
             <ImageButton
-                android:id="@+id/google_Button"
+                android:id="@+id/btnGoogle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/button_google"
+                android:background="?attr/selectableItemBackground"
                 android:scaleType="centerCrop" />
 
             <TextView
