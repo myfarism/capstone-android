@@ -15,6 +15,9 @@ import com.example.capstonebangkitpawers.fragment.ChatBotFragment
 import com.example.capstonebangkitpawers.fragment.ProfileFragment
 import com.example.capstonebangkitpawers.view.ScanActivity
 import com.example.capstonebangkitpawers.view.WelcomeActivity
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var toolbar: Toolbar
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,12 +64,21 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        viewModel.getSession().observe(this) { user ->
-            if (!user.isLogin) {
-                startActivity(Intent(this, WelcomeActivity::class.java))
-                finish()
-            }
+        auth = Firebase.auth
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
+            // Jika sudah ada pengguna yang login, langsung ke MainActivity
+            val intent = Intent(this, WelcomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
+
+//        viewModel.getSession().observe(this) { user ->
+//            if (!user.isLogin) {
+//                startActivity(Intent(this, WelcomeActivity::class.java))
+//                finish()
+//            }
+//        }
     }
 
     private fun replaceFragment(fragment: Fragment): Boolean {
