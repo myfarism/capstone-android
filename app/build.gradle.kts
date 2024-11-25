@@ -18,6 +18,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "WEB_CLIENT_ID", "\"885069307978-tg511r8r4bjrn5l7svdmnal9ar95h8jh.apps.googleusercontent.com\"")
+        buildConfigField("String", "DATABASE_URL", "\"https://capstone-project-796f7-default-rtdb.asia-southeast1.firebasedatabase.app\"")
     }
 
     buildTypes {

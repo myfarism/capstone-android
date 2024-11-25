@@ -34,9 +34,9 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
-    private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
+//    private val viewModel by viewModels<LoginViewModel> {
+//        ViewModelFactory.getInstance(this)
+//    }
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
 
@@ -45,7 +45,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
         setupClickableText()
@@ -73,29 +72,29 @@ class LoginActivity : AppCompatActivity() {
         binding.tvSandiMasuk.movementMethod = LinkMovementMethod.getInstance()
     }
 
-    private fun loginGoogle() {
-        val credentialManager = CredentialManager.create(this)
-
-        val googleIdOption = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(webClientId)
-            .build()
-
-        val request = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOption)
-            .build()
-
-        lifecycleScope.launch {
-            try {
-                val result: GetCredentialResponse = credentialManager.getCredential(
-                    request = request,
-                    context = this@LoginActivity,
-                )
-            } catch (e: GetCredentialException) {
-                Log.d("Error", e.message.toString())
-            }
-        }
-    }
+//    private fun loginGoogle() {
+//        val credentialManager = CredentialManager.create(this)
+//
+//        val googleIdOption = GetGoogleIdOption.Builder()
+//            .setFilterByAuthorizedAccounts(false)
+//            .setServerClientId(webClientId)
+//            .build()
+//
+//        val request = GetCredentialRequest.Builder()
+//            .addCredentialOption(googleIdOption)
+//            .build()
+//
+//        lifecycleScope.launch {
+//            try {
+//                val result: GetCredentialResponse = credentialManager.getCredential(
+//                    request = request,
+//                    context = this@LoginActivity,
+//                )
+//            } catch (e: GetCredentialException) {
+//                Log.d("Error", e.message.toString())
+//            }
+//        }
+//    }
 
     private fun loginEmail() {
         val email = binding.emailEditText.text.toString().trim()
@@ -103,18 +102,17 @@ class LoginActivity : AppCompatActivity() {
 
         if (!validateInputs(email, password)) return
 
-        binding.progressBar.visibility = ProgressBar.VISIBLE
+        binding.progressBar.visibility = View.VISIBLE
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
-                binding.progressBar.visibility = ProgressBar.GONE
+                binding.progressBar.visibility = View.GONE
 
                 if (task.isSuccessful) {
                     val user = auth.currentUser
-                    //user?.let { fetchUserDetails(it.uid) }
-                    showAlertDialog("Login Berhasil", "Selamat datang") {
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
+                    if (user != null) {
+                        updateLoginStatus(user.uid, true)
+                        navigateToMainActivity()
                     }
                 } else {
                     handleLoginError(task.exception)
@@ -133,28 +131,20 @@ class LoginActivity : AppCompatActivity() {
             return false
         }
 
-        if (password.isEmpty()) {
-            showAlertDialog("Error", "Password tidak boleh kosong")
-            return false
-        }
-
         return true
     }
 
-    private fun fetchUserDetails(uid: String) {
-        val userRef = FirebaseDatabase.getInstance().getReference("Users").child(uid)
+    private fun updateLoginStatus(uid: String, isLogin: Boolean) {
+        val database = FirebaseDatabase.getInstance(databaseURL)
+        val userRef = database.getReference("users").child(uid)
 
-        userRef.get().addOnCompleteListener { dbTask ->
-            if (dbTask.isSuccessful) {
-                val userName = dbTask.result?.child("name")?.value?.toString() ?: "Pengguna"
-                showAlertDialog("Login Berhasil", "Selamat datang, $userName") {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
-            } else {
-                showAlertDialog("Login Gagal", "Gagal memuat data pengguna: ${dbTask.exception?.message}")
+        userRef.child("isLogin").setValue(isLogin)
+            .addOnSuccessListener {
+                Log.d("LoginActivity", "Status login pengguna diperbarui: $isLogin")
             }
-        }
+            .addOnFailureListener { e ->
+                Log.e("LoginActivity", "Gagal memperbarui status login: ${e.message}")
+            }
     }
 
     private fun handleLoginError(exception: Exception?) {
@@ -180,7 +170,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupAction() {
         binding.btnMasuk.setOnClickListener { loginEmail() }
-        binding.btnGoogle.setOnClickListener{ loginGoogle()}
+        //binding.btnGoogle.setOnClickListener { loginGoogle() }
     }
 
     private fun showAlertDialog(title: String, message: String, onPositiveButtonClick: (() -> Unit)? = null) {
@@ -196,8 +186,14 @@ class LoginActivity : AppCompatActivity() {
             .show()
     }
 
+    private fun navigateToMainActivity() {
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
     companion object {
         const val TAG = "LoginActivity"
         const val webClientId = BuildConfig.WEB_CLIENT_ID
+        const val databaseURL = BuildConfig.DATABASE_URL
     }
 }

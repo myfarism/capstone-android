@@ -2,4 +2,7 @@
     <string name="app_name">capstoneBangkitPawers</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="kirim_ulang">Kirim Ulang</string>
+    <string name="cek_verifikasi">Cek Verifikasi</string>
+    <string name="already_have_account">Sudah punya akun? Masuk</string>
 </resources>
