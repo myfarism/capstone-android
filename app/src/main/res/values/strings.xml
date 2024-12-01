@@ -9,4 +9,5 @@
     <string name="failed_bring_up_camera">Gagal memunculkan kamera</string>
     <string name="permission">Tidak mendapatkan izin</string>
     <string name="kirim">Kirim</string>
+    <string name="ubah_sandi">Ubah Sandi</string>
 </resources>

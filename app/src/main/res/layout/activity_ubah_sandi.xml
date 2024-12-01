@@ -43,9 +43,41 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Kata Sandi Baru"
+        android:text="Kata Sandi Lama"
         android:textSize="14sp"
         android:layout_marginTop="100dp"
+        android:layout_marginStart="35dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordLamaEditTextLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="37dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="124dp"
+        app:endIconMode="password_toggle"
+        app:startIconDrawable="@drawable/baseline_lock_24"
+        app:startIconTint="@color/black"
+        app:hintTextColor="@color/black"
+        android:background="@drawable/edit_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordLamaEditText"
+            android:layout_width="338dp"
+            android:layout_height="58dp"
+            android:hint="Password"
+            android:paddingStart="50dp"
+            android:inputType="textPassword"
+            android:textStyle="italic" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kata Sandi Baru"
+        android:textSize="14sp"
+        android:layout_marginTop="200dp"
         android:layout_marginStart="35dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -55,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="37dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="224dp"
         app:endIconMode="password_toggle"
         app:startIconDrawable="@drawable/baseline_lock_24"
         app:startIconTint="@color/black"
@@ -77,7 +109,7 @@
         android:layout_height="wrap_content"
         android:text="Konfirmasi Kata Sandi Baru"
         android:textSize="14sp"
-        android:layout_marginTop="205dp"
+        android:layout_marginTop="305dp"
         android:layout_marginStart="35dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -87,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="37dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="330dp"
         app:endIconMode="password_toggle"
         app:startIconDrawable="@drawable/baseline_lock_24"
         app:startIconTint="@color/black"
@@ -104,31 +136,36 @@
             android:textStyle="italic" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center" />
+
     <FrameLayout
         android:id="@+id/framebutton"
         android:layout_width="338dp"
         android:layout_height="58dp"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="450dp"
         android:layout_marginStart="37dp"
         app:layout_constraintVertical_bias="0.099">
 
         <ImageButton
-            android:id="@+id/button_masuk"
+            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/button_green"
             android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/btnMasuk"
+            android:id="@+id/btnUbah"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Ubah Sandi"
-            android:textStyle="bold"
+            android:text="@string/ubah_sandi"
+            android:textColor="@android:color/black"
             android:textSize="15sp"
-            android:textColor="@android:color/black" />
+            android:textStyle="bold" />
     </FrameLayout>
-
-
 </FrameLayout>
