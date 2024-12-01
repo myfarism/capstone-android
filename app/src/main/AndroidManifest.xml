@@ -21,6 +21,9 @@
         android:theme="@style/Theme.CapstoneBangkitPawers"
         tools:targetApi="35">
         <activity
+            android:name=".view.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.ChatViewActivity"
             android:exported="false" />
         <activity

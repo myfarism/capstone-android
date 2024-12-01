@@ -27,6 +27,7 @@ import com.example.capstonebangkitpawers.databinding.ActivityLoginBinding
 import com.example.capstonebangkitpawers.main.MainActivity
 import com.example.capstonebangkitpawers.main.ViewModelFactory
 import com.example.capstonebangkitpawers.register.RegisterActivity
+import com.example.capstonebangkitpawers.view.ForgotPasswordActivity
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.firebase.auth.*
 import com.google.firebase.database.FirebaseDatabase
@@ -50,6 +51,7 @@ class LoginActivity : AppCompatActivity() {
         setupClickableText()
         addTextWatcher()
         setupAction()
+        setupForgotPasswordClickableText()
     }
 
     private fun setupClickableText() {
@@ -147,6 +149,27 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
+    private fun setupForgotPasswordClickableText() {
+        val forgotPasswordText = "Lupa Kata Sandi?"
+        val spannableString = SpannableString(forgotPasswordText)
+
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
+            }
+        }
+
+        spannableString.setSpan(clickableSpan, 0, forgotPasswordText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(
+            ForegroundColorSpan(getColor(android.R.color.holo_blue_light)),
+            0, forgotPasswordText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.tvForgotPassword.text = spannableString
+        binding.tvForgotPassword.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+
     private fun handleLoginError(exception: Exception?) {
         when (exception) {
             is FirebaseAuthInvalidUserException -> showAlertDialog("Login Gagal", "Email tidak terdaftar")
@@ -162,6 +185,20 @@ class LoginActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.passwordEditTextLayout.error =
                     if (s.isNullOrEmpty() || s.length < 8) "Password minimal 8 karakter" else null
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        binding.emailEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
+                    binding.emailEditTextLayout.error = "Format email tidak valid"
+                } else {
+                    binding.emailEditTextLayout.error = null
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}
