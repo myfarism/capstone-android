@@ -48,6 +48,11 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        // Debug
+        val uid = auth.currentUser?.uid
+
+        Log.d("DEBUG UID", "UID: $uid")
+
         setupClickableText()
         addTextWatcher()
         setupAction()

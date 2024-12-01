@@ -160,17 +160,14 @@ class ProfileFragment : Fragment() {
                 val userRef = database.getReference("users").child(currentUser.uid)
 
                 try {
-                    // Perbarui isLogin menjadi false di Realtime Database
                     userRef.child("isLogin").setValue(false).await()
                     Log.d("Logout", "isLogin diperbarui menjadi false.")
                 } catch (e: Exception) {
                     Log.e("Logout", "Gagal memperbarui isLogin: ${e.message}")
                 }
 
-                // Lanjutkan proses logout
                 performLogout(credentialManager)
             } else {
-                // Jika pengguna tidak ditemukan, langsung logout
                 performLogout(credentialManager)
             }
         }
@@ -183,7 +180,6 @@ class ProfileFragment : Fragment() {
                 credentialManager.clearCredentialState(ClearCredentialStateRequest())
 
                 withContext(Dispatchers.Main) {
-                    // Navigasi ke WelcomeActivity di Main Thread
                     val intent = Intent(requireContext(), WelcomeActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)

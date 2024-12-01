@@ -49,7 +49,11 @@ class VerifyEmailActivity : AppCompatActivity() {
 
     private fun checkVerificationStatus() {
         val user = auth.currentUser
+
+        binding.progressBar.visibility = View.VISIBLE
+
         user?.reload()?.addOnCompleteListener { task ->
+            binding.progressBar.visibility = View.GONE
             if (task.isSuccessful) {
                 if (user.isEmailVerified) {
                     updateUserVerificationStatus(user.uid)
@@ -64,11 +68,9 @@ class VerifyEmailActivity : AppCompatActivity() {
     }
 
     private fun updateUserVerificationStatus(uid: String) {
-        // Gunakan URL database yang sesuai region
         val database = FirebaseDatabase.getInstance(databaseURL)
         val userRef = database.getReference("users").child(uid)
 
-        // Perbarui status isVerified menjadi true
         userRef.child("isVerified").setValue(true)
             .addOnSuccessListener {
                 Log.d("VerifyEmailActivity", "Status verifikasi pengguna diperbarui di database.")
@@ -91,6 +93,7 @@ class VerifyEmailActivity : AppCompatActivity() {
     }
 
     private fun navigateToLogin() {
+        auth.signOut()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
@@ -108,18 +111,14 @@ class VerifyEmailActivity : AppCompatActivity() {
         binding.btnResend.isEnabled = false
         binding.timerTextView.visibility = View.VISIBLE
 
-        // Timer countdown 1 menit (60000 ms)
         val timer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                // Hitung menit dan detik
                 val minutes = millisUntilFinished / 60000
                 val seconds = (millisUntilFinished % 60000) / 1000
-                // Tampilkan waktu dalam format "MM:SS"
                 binding.timerTextView.text = String.format("%02d:%02d", minutes, seconds)
             }
 
             override fun onFinish() {
-                // Aktifkan tombol kirim ulang dan sembunyikan timer
                 binding.btnResend.isEnabled = true
                 binding.timerTextView.visibility = View.GONE
             }
@@ -129,8 +128,9 @@ class VerifyEmailActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        timer?.cancel() // Ensure timer is stopped when activity is destroyed
+        timer?.cancel()
     }
+
 
     companion object {
         const val databaseURL = BuildConfig.DATABASE_URL
