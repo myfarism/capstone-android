@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
         // Periksa apakah pengguna login atau tidak
         auth = Firebase.auth
         val currentUser = auth.currentUser

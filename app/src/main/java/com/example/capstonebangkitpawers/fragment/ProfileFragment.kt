@@ -58,6 +58,7 @@ class ProfileFragment : Fragment() {
         setupLogout(view)
         setupPengaturan(view)
         setupRiwayat(view)
+        setupDataDiri(view)
 
         return view
     }
@@ -121,6 +122,15 @@ class ProfileFragment : Fragment() {
         val riwayat: View = view.findViewById(R.id.riwayatContainer)
         riwayat.setOnClickListener {
             val intent = Intent(requireContext(), HistoryActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+        }
+    }
+
+    private fun setupDataDiri(view: View) {
+        val riwayat: View = view.findViewById(R.id.dataDiriContainer)
+        riwayat.setOnClickListener {
+            val intent = Intent(requireContext(), DataDiriActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
         }

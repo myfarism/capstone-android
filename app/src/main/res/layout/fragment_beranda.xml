@@ -13,18 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp">
+            android:orientation="vertical"
+            android:padding="3dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -34,8 +29,9 @@
 
                     <!-- Card 1 -->
                     <LinearLayout
-                        android:layout_width="195dp"
-                        android:layout_height="259dp"
+                        android:id="@+id/pindai"
+                        android:layout_width="175dp"
+                        android:layout_height="239dp"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:padding="16dp"
@@ -43,8 +39,8 @@
                         android:background="@drawable/background_cream">
 
                         <FrameLayout
-                            android:layout_width="166dp"
-                            android:layout_height="121dp"
+                            android:layout_width="146dp"
+                            android:layout_height="101dp"
                             android:background="@drawable/background_white">
 
                             <ImageView
@@ -52,7 +48,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="top|start"
-                                android:layout_marginStart="-25dp"
+                                android:layout_marginStart="-30dp"
                                 android:layout_marginTop="-3dp"
                                 app:srcCompat="@drawable/cat_home"/>
 
@@ -63,7 +59,7 @@
                                 android:layout_gravity="end|bottom"
                                 android:layout_marginEnd="8dp"
                                 android:layout_marginBottom="8dp"
-                                app:srcCompat="@drawable/baseline_image_search_24"/>
+                                app:srcCompat="@drawable/baseline_image_search_24" />
 
                         </FrameLayout>
 
@@ -80,7 +76,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pindai Penyakit Kucingmu dan dapatkan data untuk gejala dan pencegahannya!"
-                            android:textSize="12sp"
+                            android:textSize="10sp"
                             android:textColor="#000000"
                             android:gravity="center"
                             android:layout_marginTop="10dp"
@@ -89,8 +85,9 @@
 
                     <!-- Card 2 -->
                     <LinearLayout
-                        android:layout_width="195dp"
-                        android:layout_height="259dp"
+                        android:id="@+id/riwayat"
+                        android:layout_width="175dp"
+                        android:layout_height="239dp"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
                         android:padding="16dp"
@@ -98,15 +95,15 @@
                         android:background="@drawable/background_green">
 
                         <FrameLayout
-                            android:layout_width="166dp"
-                            android:layout_height="121dp"
+                            android:layout_width="146dp"
+                            android:layout_height="101dp"
                             android:background="@drawable/background_white">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="top|start"
-                            android:layout_marginStart="-15dp"
+                            android:layout_marginStart="-45dp"
                             android:layout_marginTop="-10dp"
                             app:srcCompat="@drawable/cat_home2"/>
 
@@ -133,13 +130,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pindai Penyakit Kucingmu dan dapatkan data untuk gejala dan pencegahannya!"
-                            android:textSize="12sp"
+                            android:textSize="10sp"
                             android:textColor="#000000"
                             android:gravity="center"
                             android:layout_marginTop="10dp" />
                     </LinearLayout>
                 </LinearLayout>
-            </HorizontalScrollView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

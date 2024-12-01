@@ -5,4 +5,7 @@
     <string name="kirim_ulang">Kirim Ulang</string>
     <string name="cek_verifikasi">Cek Verifikasi</string>
     <string name="already_have_account">Sudah punya akun? Masuk</string>
+    <string name="failed_take_picture">Gagal mengambil gambar</string>
+    <string name="failed_bring_up_camera">Gagal memunculkan kamera</string>
+    <string name="permission">Tidak mendapatkan izin</string>
 </resources>

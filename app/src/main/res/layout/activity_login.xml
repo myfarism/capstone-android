@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".login.LoginActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -42,26 +43,26 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailEditTextLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textWelcome"
-        app:startIconDrawable="@drawable/baseline_email_24"
+        android:layout_width="338dp"
+        android:layout_height="58dp"
         android:background="@drawable/edit_text"
-        app:startIconTint="@color/black"
-        app:hintTextColor="@color/black">
+        app:hintTextColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.367"
+        app:startIconDrawable="@drawable/baseline_email_24"
+        app:startIconTint="@color/black">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditText"
             android:layout_width="338dp"
             android:layout_height="58dp"
             android:hint="Email"
-            android:paddingStart="50dp"
             android:inputType="textEmailAddress"
+            android:paddingStart="50dp"
             android:textStyle="italic" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,24 +72,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="37dp"
-        android:layout_marginEnd="35dp"
         android:layout_marginTop="31dp"
+        android:layout_marginEnd="35dp"
+        android:background="@drawable/edit_text"
+        app:endIconMode="password_toggle"
+        app:hintTextColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/emailEditTextLayout"
-        app:endIconMode="password_toggle"
         app:startIconDrawable="@drawable/baseline_lock_24"
-        app:startIconTint="@color/black"
-        app:hintTextColor="@color/black"
-        android:background="@drawable/edit_text">
+        app:startIconTint="@color/black">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
             android:layout_width="338dp"
             android:layout_height="58dp"
             android:hint="Password"
-            android:paddingStart="50dp"
             android:inputType="textPassword"
+            android:paddingStart="50dp"
             android:textStyle="italic" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,10 +118,10 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="Masuk"
-            android:textStyle="bold"
+            android:textColor="@android:color/black"
             android:textSize="15sp"
 
-            android:textColor="@android:color/black" />
+            android:textStyle="bold" />
     </FrameLayout>
 
 
@@ -202,20 +203,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginTop="18dp"
                 android:text="Masuk Dengan Google"
                 android:textColor="@android:color/black"
                 android:textSize="15sp"
-                android:textStyle="bold"
-                android:layout_marginTop="18dp"
-                android:layout_marginStart="120dp"/>
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/google"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="82dp" />
+                android:layout_marginStart="82dp"
+                android:src="@drawable/google" />
 
         </RelativeLayout>
 
@@ -239,9 +240,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
