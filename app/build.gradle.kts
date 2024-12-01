@@ -77,10 +77,17 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("androidx.recyclerview:recyclerview:1.3.0")
 
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
     implementation("androidx.credentials:credentials:1.5.0-beta01")
     implementation("androidx.credentials:credentials-play-services-auth:1.5.0-beta01")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
+    implementation ("androidx.camera:camera-camera2:1.1.0-beta02")
+    implementation ("androidx.camera:camera-lifecycle:1.1.0-beta02")
+    implementation ("androidx.camera:camera-view:1.1.0-beta02")
+
+    implementation ("com.codesgood:justifiedtextview:1.1.0")
 }

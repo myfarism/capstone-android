@@ -39,32 +39,10 @@
                 android:layout_height="140dp"
                 android:layout_centerInParent="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@drawable/profile"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="5dp" />
 
-            <ImageView
-                android:id="@+id/imageVieww"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:layout_marginStart="94dp"
-                android:src="@drawable/circle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.05" />
-
-            <ImageView
-                android:id="@+id/editIcon"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginStart="98dp"
-                android:src="@drawable/baseline_edit_24"
-                android:tint="@color/green"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:contentDescription="Edit Icon" />
 
         </FrameLayout>
 
@@ -85,9 +63,8 @@
 
         <!-- Edit Profile Section (Container for Image and Text) -->
 
-        <!-- Divider for Edit Profile -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/pengaturanContainer"
+            android:id="@+id/dataDiriContainer"
             android:layout_width="match_parent"
             android:layout_height="73dp"
             android:layout_marginTop="60dp"
@@ -95,6 +72,48 @@
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/yourName"
+            tools:layout_editor_absoluteX="4dp">
+
+            <ImageView
+                android:id="@+id/imageViewDataDiri"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/baseline_person_24_green"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/editDataDiri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="23dp"
+                android:text="Edit Profil"
+                android:textSize="20dp"
+                app:layout_constraintStart_toEndOf="@id/imageViewDataDiri"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DEDEDE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dataDiriContainer" />
+
+        <!-- Divider for Edit Profile -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/pengaturanContainer"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toBottomOf="@+id/dataDiriContainer"
             tools:layout_editor_absoluteX="4dp">
 
             <ImageView
@@ -124,7 +143,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="4dp"
             android:background="#DEDEDE"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -135,14 +153,13 @@
             android:id="@+id/riwayatContainer"
             android:layout_width="match_parent"
             android:layout_height="73dp"
-            android:layout_marginTop="20dp"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintTop_toBottomOf="@+id/pengaturanContainer">
 
             <ImageView
-                android:id="@+id/imageViewDataDiri"
+                android:id="@+id/imageViewRiwayat"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_marginStart="40dp"
@@ -152,14 +169,14 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/datadiriText"
+                android:id="@+id/riwayatText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="23dp"
                 android:text="Riwayat"
                 android:textSize="20dp"
-                app:layout_constraintStart_toEndOf="@id/imageViewDataDiri"
+                app:layout_constraintStart_toEndOf="@id/imageViewRiwayat"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -169,7 +186,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="4dp"
             android:background="#DEDEDE"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -180,7 +196,6 @@
             android:id="@+id/logoutContainer"
             android:layout_width="match_parent"
             android:layout_height="73dp"
-            android:layout_marginTop="20dp"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
@@ -212,7 +227,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="4dp"
             android:background="#DEDEDE"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
