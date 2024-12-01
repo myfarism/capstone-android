@@ -78,12 +78,13 @@
 
     </FrameLayout>
 
+
     <ImageView
         android:layout_width="33dp"
         android:layout_height="33dp"
         android:src="@drawable/baseline_person_24_green"
         android:layout_marginTop="325dp"
-        android:layout_marginStart="38dp"/>
+        android:layout_marginStart="48dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -92,32 +93,31 @@
         android:textColor="@color/black"
         android:textSize="20dp"
         android:layout_marginTop="328dp"
-        android:layout_marginStart="80dp"/>
+        android:layout_marginStart="88dp"/>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordEditTextLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="37dp"
-        android:layout_marginEnd="35dp"
+        android:layout_width="301dp"
+        android:layout_height="54dp"
         android:layout_marginTop="372dp"
+        android:layout_marginStart="50dp"
         android:background="@drawable/edit_text">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
-            android:layout_width="338dp"
-            android:layout_height="58dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="Masukan Namamu"
             android:textStyle="italic" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <FrameLayout
         android:id="@+id/framebutton"
-        android:layout_width="338dp"
-        android:layout_height="58dp"
+        android:layout_width="301dp"
+        android:layout_height="54dp"
         android:layout_marginTop="540dp"
-        android:layout_marginStart="37dp"
+        android:layout_marginStart="50dp"
         app:layout_constraintVertical_bias="0.099">
 
         <ImageButton

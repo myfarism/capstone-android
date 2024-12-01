@@ -35,8 +35,7 @@
             android:id="@+id/scanDisini"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="200dp"
+            android:layout_marginStart="150dp"
             android:src="@drawable/scan"
             android:clickable="true"/>
     </LinearLayout>
