@@ -3,9 +3,7 @@ package com.example.capstonebangkitpawers.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.R
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -13,7 +11,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.capstonebangkitpawers.databinding.ActivityMapsBinding
-import com.google.android.gms.maps.MapsInitializer
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 

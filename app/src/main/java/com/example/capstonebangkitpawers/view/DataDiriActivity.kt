@@ -9,9 +9,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.databinding.ActivityDataDiriBinding
+import com.example.capstonebangkitpawers.main.MainViewModel
+import com.example.capstonebangkitpawers.main.ViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -24,9 +27,9 @@ class DataDiriActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDataDiriBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
+    private lateinit var mainViewModel: MainViewModel
     private var imageUri: Uri? = null
 
-    // Replaced onActivityResult with registerForActivityResult
     private val getImageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             imageUri = it
@@ -41,6 +44,11 @@ class DataDiriActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL)
+
+        mainViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory.getInstance(application)
+        ).get(MainViewModel::class.java)
 
         binding.btnBack.setOnClickListener {
             onBackPressed()
@@ -70,9 +78,6 @@ class DataDiriActivity : AppCompatActivity() {
             val userRef = database.getReference("users").child(it.uid)
             userRef.get().addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
-                    val name = snapshot.child("name").getValue(String::class.java) ?: ""
-                    //binding.nameEditText.setText(name)
-
                     val profileImagePath = snapshot.child("photoUrl").getValue(String::class.java)
                     if (!profileImagePath.isNullOrEmpty()) {
                         val imageFile = File(profileImagePath)
@@ -89,14 +94,14 @@ class DataDiriActivity : AppCompatActivity() {
     private fun updateName(name: String) {
         val user = auth.currentUser
         user?.let {
+            val uid = it.uid
             val userRef = database.getReference("users").child(it.uid)
-            userRef.child("name").setValue(name)
-                .addOnSuccessListener {
+            userRef.child("name").setValue(name).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    mainViewModel.updateName(uid, name)
                     Toast.makeText(this, "Nama berhasil diperbarui", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Gagal memperbarui nama: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+            }
         }
     }
 
@@ -107,6 +112,7 @@ class DataDiriActivity : AppCompatActivity() {
     private fun saveProfileImageLocally(uri: Uri) {
         val user = auth.currentUser
         user?.let {
+            val uid = it.uid
             val fileName = "${it.uid}_profile_image_${UUID.randomUUID()}.jpg"
             val file = File(filesDir, fileName)
 
@@ -119,16 +125,14 @@ class DataDiriActivity : AppCompatActivity() {
                 outputStream.close()
 
                 val userRef = database.getReference("users").child(it.uid)
-                userRef.child("photoUrl").setValue(file.absolutePath)
-                    .addOnSuccessListener {
+                userRef.child("photoUrl").setValue(file.absolutePath).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        mainViewModel.updateProfileImage(uid, file.absolutePath)
                         Toast.makeText(this, "Foto profil berhasil diperbarui", Toast.LENGTH_SHORT).show()
-                        Log.d("FOTO", file.toString())
                         val bitmap = BitmapFactory.decodeFile(file.absolutePath)
                         binding.profileImage1.setImageBitmap(bitmap)
                     }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Gagal memperbarui foto profil: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                }
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -137,5 +141,4 @@ class DataDiriActivity : AppCompatActivity() {
         }
     }
 }
-
 
