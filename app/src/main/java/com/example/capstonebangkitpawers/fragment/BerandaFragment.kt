@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import com.example.capstonebangkitpawers.R
 import com.example.capstonebangkitpawers.view.ChatViewActivity
 import com.example.capstonebangkitpawers.view.HistoryActivity
+import com.example.capstonebangkitpawers.view.MapsActivity
 import com.example.capstonebangkitpawers.view.ScanActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -25,6 +26,8 @@ class BerandaFragment : Fragment() {
 
         val riwayat: LinearLayout = view.findViewById(R.id.riwayat)
 
+        val map: ImageView = view.findViewById(R.id.map)
+
         pindai.setOnClickListener {
             val intent = Intent(activity, ScanActivity::class.java)
             startActivity(intent)
@@ -32,6 +35,11 @@ class BerandaFragment : Fragment() {
 
         riwayat.setOnClickListener {
             val intent = Intent(activity, HistoryActivity::class.java)
+            startActivity(intent)
+        }
+
+        map.setOnClickListener {
+            val intent = Intent(activity, MapsActivity::class.java)
             startActivity(intent)
         }
 

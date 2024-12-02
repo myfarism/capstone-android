@@ -11,4 +11,5 @@
     <string name="kirim">Kirim</string>
     <string name="ubah_sandi">Ubah Sandi</string>
     <string name="name">Name</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

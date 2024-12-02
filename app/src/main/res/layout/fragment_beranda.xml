@@ -136,6 +136,15 @@
                             android:layout_marginTop="10dp" />
                     </LinearLayout>
                 </LinearLayout>
+
+            <ImageView
+                android:id="@+id/map"
+                android:layout_width="350dp"
+                android:layout_height="268dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:contentDescription="Lokasi Dokter Hewan"
+                app:srcCompat="@drawable/doctor_loc" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
