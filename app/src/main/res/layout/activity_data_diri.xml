@@ -97,7 +97,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordEditTextLayout"
+        android:id="@+id/nameEditTextLayout"
         android:layout_width="301dp"
         android:layout_height="54dp"
         android:layout_marginTop="372dp"
@@ -105,7 +105,7 @@
         android:background="@drawable/edit_text">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordEditText"
+            android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Masukan Namamu"
@@ -121,7 +121,7 @@
         app:layout_constraintVertical_bias="0.099">
 
         <ImageButton
-            android:id="@+id/button_masuk"
+            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/button_green"
