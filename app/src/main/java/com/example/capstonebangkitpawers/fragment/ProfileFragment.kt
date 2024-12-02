@@ -11,11 +11,13 @@ import android.widget.TextView
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.R
+import com.example.capstonebangkitpawers.login.LoginActivity.Companion.databaseURL
 import com.example.capstonebangkitpawers.main.MainViewModel
 import com.example.capstonebangkitpawers.main.ViewModelFactory
 import com.example.capstonebangkitpawers.view.DataDiriActivity
@@ -42,64 +44,40 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        mainViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory.getInstance(requireContext())
-        )[MainViewModel::class.java]
+        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        auth = Firebase.auth
-
+        auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL).reference
 
-        setupUser(view)
+        mainViewModel.userName.observe(viewLifecycleOwner, Observer { name ->
+            val yourNameTextView: TextView = view.findViewById(R.id.yourName)
+            yourNameTextView.text = name
+        })
+
+        mainViewModel.profileImageUrl.observe(viewLifecycleOwner, Observer { photoUrl ->
+            val profileImageView: CircleImageView = view.findViewById(R.id.profileImage1)
+            if (photoUrl == "default") {
+                profileImageView.setImageResource(R.drawable.profile_placeholder)
+            } else {
+                Glide.with(this)
+                    .load(photoUrl)
+                    .placeholder(R.drawable.profile_placeholder)
+                    .error(R.drawable.profile_placeholder)
+                    .into(profileImageView)
+            }
+        })
+
+        mainViewModel.loadUserData()
+
         setupLogout(view)
         setupPengaturan(view)
         setupRiwayat(view)
         setupDataDiri(view)
 
         return view
-    }
-
-    private fun setupUser(view: View) {
-        val yourNameTextView: TextView = view.findViewById(R.id.yourName)
-        val profileImageView: CircleImageView = view.findViewById(R.id.profileImage1)
-        val currentUser = auth.currentUser
-
-        if (currentUser != null) {
-            val userRef = database.child("users").child(currentUser.uid)
-
-            userRef.get()
-                .addOnSuccessListener { snapshot ->
-                    val name = snapshot.child("name").getValue(String::class.java) ?: "Nama tidak ditemukan"
-                    val photoUrl = snapshot.child("photoUrl").getValue(String::class.java) ?: "default"
-
-                    // Set nama pengguna
-                    yourNameTextView.text = name
-                    Log.d("ProfileFragment", "Nama pengguna: $name")
-
-                    // Set foto profil
-                    if (photoUrl == "default") {
-                        profileImageView.setImageResource(R.drawable.profile_placeholder)
-                    } else {
-                        Glide.with(this)
-                            .load(photoUrl)
-                            .placeholder(R.drawable.profile_placeholder)
-                            .error(R.drawable.profile_placeholder)
-                            .into(profileImageView)
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.e("ProfileFragment", "Gagal mengambil data pengguna: ${e.message}")
-                    yourNameTextView.text = "Gagal memuat nama"
-                    profileImageView.setImageResource(R.drawable.profile_placeholder)
-                }
-        } else {
-            yourNameTextView.text = "Tidak ada pengguna"
-            profileImageView.setImageResource(R.drawable.profile_placeholder)
-        }
     }
 
     private fun setupLogout(view: View) {
@@ -128,8 +106,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupDataDiri(view: View) {
-        val riwayat: View = view.findViewById(R.id.dataDiriContainer)
-        riwayat.setOnClickListener {
+        val dataDiri: View = view.findViewById(R.id.dataDiriContainer)
+        dataDiri.setOnClickListener {
             val intent = Intent(requireContext(), DataDiriActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
@@ -140,6 +118,7 @@ class ProfileFragment : Fragment() {
         AlertDialog.Builder(requireContext())
             .setMessage("Apakah Anda ingin logout?")
             .setPositiveButton("Ya") { dialog, _ ->
+                updateLogoutStatus()
                 logout()
                 dialog.dismiss()
             }
@@ -150,48 +129,36 @@ class ProfileFragment : Fragment() {
             .show()
     }
 
+    private fun updateLogoutStatus() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        if (currentUser != null) {
+            val userId = currentUser.uid
+            val database = FirebaseDatabase.getInstance(databaseURL)
+            val userRef = database.getReference("users").child(userId)
+
+            userRef.child("isLogin").setValue(false)
+                .addOnSuccessListener {
+                    Log.d("LoginActivity", "Status login pengguna diperbarui: false")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("LoginActivity", "Gagal memperbarui status login: ${e.message}")
+                }
+        } else {
+            Log.e("LoginActivity", "Pengguna belum terautentikasi, tidak bisa memperbarui status login.")
+        }
+    }
+
     private fun logout() {
-        lifecycleScope.launch {
-            val credentialManager = CredentialManager.create(requireContext())
-            val currentUser = auth.currentUser
-
-            if (currentUser != null) {
-                val database = FirebaseDatabase.getInstance(databaseURL)
-                val userRef = database.getReference("users").child(currentUser.uid)
-
-                try {
-                    userRef.child("isLogin").setValue(false).await()
-                    Log.d("Logout", "isLogin diperbarui menjadi false.")
-                } catch (e: Exception) {
-                    Log.e("Logout", "Gagal memperbarui isLogin: ${e.message}")
-                }
-
-                performLogout(credentialManager)
-            } else {
-                performLogout(credentialManager)
-            }
-        }
+        FirebaseAuth.getInstance().signOut()
+        val intent = Intent(requireContext(), WelcomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
-    private suspend fun performLogout(credentialManager: CredentialManager) {
-        withContext(Dispatchers.IO) {
-            try {
-                auth.signOut()
-                credentialManager.clearCredentialState(ClearCredentialStateRequest())
-
-                withContext(Dispatchers.Main) {
-                    val intent = Intent(requireContext(), WelcomeActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    Log.d("Logout", "Proses logout selesai. Pengguna diarahkan ke WelcomeActivity.")
-                }
-            } catch (e: Exception) {
-                Log.e("Logout", "Terjadi kesalahan saat logout: ${e.message}")
-            }
-        }
-    }
-
-    companion object {
-        const val databaseURL = BuildConfig.DATABASE_URL
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.loadUserData()
     }
 }
+

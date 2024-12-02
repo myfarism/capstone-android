@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
@@ -27,6 +28,9 @@ import com.example.capstonebangkitpawers.login.LoginActivity
 import com.example.capstonebangkitpawers.main.MainActivity
 import com.example.capstonebangkitpawers.view.VerifyEmailActivity
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -55,32 +59,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnDaftar.setOnClickListener { registerEmail() }
-        //binding.btnGoogle.setOnClickListener { registerGoogle()}
     }
-
-//    private fun registerGoogle() {
-//        val credentialManager = CredentialManager.create(this)
-//
-//        val googleIdOption = GetGoogleIdOption.Builder()
-//            .setFilterByAuthorizedAccounts(false)
-//            .setServerClientId(webClientId)
-//            .build()
-//
-//        val request = GetCredentialRequest.Builder()
-//            .addCredentialOption(googleIdOption)
-//            .build()
-//
-//        lifecycleScope.launch {
-//            try {
-//                val result: GetCredentialResponse = credentialManager.getCredential(
-//                    request = request,
-//                    context = this@RegisterActivity,
-//                )
-//            } catch (e: GetCredentialException) {
-//                Log.d("Error", e.message.toString())
-//            }
-//        }
-//    }
 
     private fun registerEmail() {
         val email = binding.emailEditText.text.toString().trim()
@@ -110,7 +89,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun saveUserToDatabase(uid: String, name: String, email: String) {
-        val database = FirebaseDatabase.getInstance(databaseURL)
+        val database = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL)
         val userRef = database.getReference("users").child(uid)
 
         val userData = mapOf(
@@ -144,6 +123,12 @@ class RegisterActivity : AppCompatActivity() {
     private fun navigateToVerifyEmail(email: String) {
         val intent = Intent(this, VerifyEmailActivity::class.java)
         intent.putExtra("userEmail", email)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun navigateToMain() {
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -243,11 +228,6 @@ class RegisterActivity : AppCompatActivity() {
     private fun navigateToLogin() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
-    }
-
-    companion object {
-        const val webClientId = BuildConfig.WEB_CLIENT_ID
-        const val databaseURL = BuildConfig.DATABASE_URL
     }
 }
 
