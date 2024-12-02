@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -19,6 +20,8 @@ android {
 
         buildConfigField("String", "WEB_CLIENT_ID", "\"885069307978-tg511r8r4bjrn5l7svdmnal9ar95h8jh.apps.googleusercontent.com\"")
         buildConfigField("String", "DATABASE_URL", "\"https://capstone-project-796f7-default-rtdb.asia-southeast1.firebasedatabase.app\"")
+
+        resValue("string", "google_maps_api_key", project.hasProperty("google_maps_api_key").toString())
     }
 
     buildTypes {
@@ -58,6 +61,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

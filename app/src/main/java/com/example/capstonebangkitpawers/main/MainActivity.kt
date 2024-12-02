@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.R
 import com.example.capstonebangkitpawers.databinding.ActivityMainBinding
 import com.example.capstonebangkitpawers.fragment.BerandaFragment
@@ -86,14 +87,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkLoginStatus(uid: String) {
-        val database = FirebaseDatabase.getInstance("https://capstone-project-796f7-default-rtdb.asia-southeast1.firebasedatabase.app")
+        val database = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL)
         val userRef = database.getReference("users").child(uid)
 
         userRef.child("isLogin").get()
             .addOnSuccessListener { snapshot ->
                 val isLogin = snapshot.getValue(Boolean::class.java) ?: false
                 if (!isLogin) {
-                    // Jika `isLogin` false, arahkan pengguna kembali ke login
                     navigateToWelcomeActivity()
                 }
             }
