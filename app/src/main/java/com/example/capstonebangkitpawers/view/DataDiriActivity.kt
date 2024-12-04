@@ -5,19 +5,18 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.databinding.ActivityDataDiriBinding
+import com.example.capstonebangkitpawers.fragment.ProfileFragment
+import com.example.capstonebangkitpawers.main.MainActivity
 import com.example.capstonebangkitpawers.main.MainViewModel
 import com.example.capstonebangkitpawers.main.ViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID
@@ -68,6 +67,8 @@ class DataDiriActivity : AppCompatActivity() {
 
             if (imageUri != null) {
                 saveProfileImageLocally(imageUri!!)
+            } else if (name.isNotEmpty()) {
+                goToHome()
             }
         }
     }
@@ -96,10 +97,13 @@ class DataDiriActivity : AppCompatActivity() {
         user?.let {
             val uid = it.uid
             val userRef = database.getReference("users").child(it.uid)
-            userRef.child("name").setValue(name).addOnCompleteListener {
-                if (it.isSuccessful) {
+            userRef.child("name").setValue(name).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
                     mainViewModel.updateName(uid, name)
                     Toast.makeText(this, "Nama berhasil diperbarui", Toast.LENGTH_SHORT).show()
+                    goToHome()
+                } else {
+                    Toast.makeText(this, "Gagal memperbarui nama", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -125,12 +129,15 @@ class DataDiriActivity : AppCompatActivity() {
                 outputStream.close()
 
                 val userRef = database.getReference("users").child(it.uid)
-                userRef.child("photoUrl").setValue(file.absolutePath).addOnCompleteListener {
-                    if (it.isSuccessful) {
+                userRef.child("photoUrl").setValue(file.absolutePath).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
                         mainViewModel.updateProfileImage(uid, file.absolutePath)
                         Toast.makeText(this, "Foto profil berhasil diperbarui", Toast.LENGTH_SHORT).show()
                         val bitmap = BitmapFactory.decodeFile(file.absolutePath)
                         binding.profileImage1.setImageBitmap(bitmap)
+                        goToHome()
+                    } else {
+                        Toast.makeText(this, "Gagal memperbarui foto profil", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -140,5 +147,10 @@ class DataDiriActivity : AppCompatActivity() {
             }
         }
     }
+    private fun goToHome() {
+        val intent = Intent(this, ProfileFragment::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
+    }
 }
-

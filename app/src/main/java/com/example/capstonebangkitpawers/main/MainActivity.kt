@@ -1,13 +1,16 @@
 package com.example.capstonebangkitpawers.main
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.R
@@ -21,6 +24,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.database.FirebaseDatabase
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +35,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var toolbar: Toolbar
     private lateinit var auth: FirebaseAuth
+
+    private lateinit var imageUri: Uri
+    private val captureImage = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+        if (it) {
+            val intent = Intent(this, ScanActivity::class.java)
+            intent.putExtra("imageUri", imageUri)
+            startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,14 +58,12 @@ class MainActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        val scanIcon: ImageView = findViewById(R.id.scanDisini)
+        val scanIcon: ImageView = findViewById(R.id.captureImgBtn)
         scanIcon.setOnClickListener {
-            val intent = Intent(this, ScanActivity::class.java)
-            startActivity(intent)
+            imageUri = createImageUri()
+            captureImage.launch(imageUri)
         }
 
-
-        // Periksa apakah pengguna login atau tidak
         auth = Firebase.auth
         val currentUser = auth.currentUser
         if (currentUser == null) {
@@ -106,5 +117,14 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, WelcomeActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
+    }
+
+    private fun createImageUri(): Uri {
+        val image = File(filesDir, "camera_photos.png")
+        return FileProvider.getUriForFile(
+            this,
+            "${BuildConfig.APPLICATION_ID}.fileprovider",
+            image
+        )
     }
 }
