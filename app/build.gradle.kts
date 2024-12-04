@@ -95,4 +95,8 @@ dependencies {
     implementation ("androidx.camera:camera-view:1.1.0-beta02")
 
     implementation ("com.codesgood:justifiedtextview:1.1.0")
+    implementation("org.tensorflow:tensorflow-lite:2.12.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
