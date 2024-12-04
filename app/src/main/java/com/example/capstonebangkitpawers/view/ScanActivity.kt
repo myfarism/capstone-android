@@ -28,7 +28,8 @@ class ScanActivity : AppCompatActivity() {
         resultTextView = findViewById(R.id.resultTextView)
         captureImageView = findViewById(R.id.captureImageView)
 
-        val imageUri: Uri? = intent.getParcelableExtra("imageUri")
+        val imageUriString: String? = intent.getStringExtra("imageUri")
+        val imageUri: Uri? = imageUriString?.let { Uri.parse(it) }
         captureImageView.setImageURI(imageUri)
         loadModel()
 
@@ -86,7 +87,7 @@ class ScanActivity : AppCompatActivity() {
 
     private fun displayResult(label: String, confidence: Float) {
         runOnUiThread {
-            val resultText = "Predicted: $label with confidence: ${"%.2f".format(confidence)}"
+            val resultText = "Predicted: $label"
             resultTextView.text = resultText
         }
     }

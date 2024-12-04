@@ -1,6 +1,8 @@
 package com.example.capstonebangkitpawers.main
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.capstonebangkitpawers.BuildConfig
@@ -20,9 +24,7 @@ import com.example.capstonebangkitpawers.fragment.ChatBotFragment
 import com.example.capstonebangkitpawers.fragment.ProfileFragment
 import com.example.capstonebangkitpawers.view.ScanActivity
 import com.example.capstonebangkitpawers.view.WelcomeActivity
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.database.FirebaseDatabase
 import java.io.File
 
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private val captureImage = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         if (it) {
             val intent = Intent(this, ScanActivity::class.java)
-            intent.putExtra("imageUri", imageUri)
+            intent.putExtra("imageUri", imageUri.toString())
             startActivity(intent)
         }
     }
@@ -60,11 +62,13 @@ class MainActivity : AppCompatActivity() {
 
         val scanIcon: ImageView = findViewById(R.id.captureImgBtn)
         scanIcon.setOnClickListener {
-            imageUri = createImageUri()
-            captureImage.launch(imageUri)
+            if (checkAndRequestPermissions()) {
+                imageUri = createImageUri()
+                captureImage.launch(imageUri)
+            }
         }
 
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         if (currentUser == null) {
             navigateToWelcomeActivity()
@@ -77,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             replaceFragment(BerandaFragment())
         }
 
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_beranda -> replaceFragment(BerandaFragment())
                 R.id.nav_chat -> replaceFragment(ChatBotFragment())
@@ -126,5 +130,47 @@ class MainActivity : AppCompatActivity() {
             "${BuildConfig.APPLICATION_ID}.fileprovider",
             image
         )
+    }
+
+    private fun checkAndRequestPermissions(): Boolean {
+        val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        val writePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val readPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        val listPermissionsNeeded = ArrayList<String>()
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA)
+        }
+        if (writePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if (readPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        if (listPermissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(arrayOfNulls(0)), 100)
+            return false
+        }
+        return true
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            100 -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    imageUri = createImageUri()
+                    captureImage.launch(imageUri)
+                } else {
+                    Log.e("MainActivity", "Permission denied")
+                }
+                return
+            }
+        }
     }
 }

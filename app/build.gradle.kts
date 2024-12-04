@@ -24,6 +24,11 @@ android {
         resValue("string", "google_maps_api_key", project.hasProperty("google_maps_api_key").toString())
     }
 
+    aaptOptions {
+        noCompress("tflite")
+        noCompress("lite")
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
