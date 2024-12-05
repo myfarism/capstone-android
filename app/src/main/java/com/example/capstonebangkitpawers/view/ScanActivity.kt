@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.capstonebangkitpawers.R
 import org.tensorflow.lite.Interpreter
 import java.io.File
-import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -53,41 +52,55 @@ class ScanActivity : AppCompatActivity() {
         return assets.open("labels.txt").bufferedReader().use { it.readLines() }
     }
 
-    private fun preprocessImage(imageUri: Uri): ByteBuffer {
-        val inputSize = 224
+    private fun preprocessImage(imageUri: Uri): Bitmap {
+        val inputSize = 224  // Input size expected by the model
         val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imageUri)
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true)
 
-        val byteBuffer = ByteBuffer.allocateDirect(4 * inputSize * inputSize * 3)
-        byteBuffer.order(ByteOrder.nativeOrder())
-
-        val intValues = IntArray(inputSize * inputSize)
-        scaledBitmap.getPixels(intValues, 0, scaledBitmap.width, 0, 0, scaledBitmap.width, scaledBitmap.height)
-        for (pixelValue in intValues) {
-            byteBuffer.putFloat(((pixelValue shr 16 and 0xFF) / 255.0f))
-            byteBuffer.putFloat(((pixelValue shr 8 and 0xFF) / 255.0f))
-            byteBuffer.putFloat(((pixelValue and 0xFF) / 255.0f))
-        }
-
-        return byteBuffer
+        // Resize the image to match the input size of the model
+        return Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true)
     }
 
     private fun classifyImage(imageUri: Uri) {
-        val inputBuffer = preprocessImage(imageUri)
-        val output = Array(1) { FloatArray(labels.size) }
-        tflite.run(inputBuffer, output)
+        val inputBitmap = preprocessImage(imageUri)
 
+        // Convert the Bitmap to a ByteBuffer that the model understands
+        val byteBuffer = convertBitmapToByteBuffer(inputBitmap)
+
+        // Prepare an output array for the results
+        val output = Array(1) { FloatArray(labels.size) }
+
+        // Run the model on the image data
+        tflite.run(byteBuffer, output)
+
+        // Find the label with the highest confidence
         val result = output[0]
         val maxIndex = result.indices.maxByOrNull { result[it] } ?: -1
         val predictedLabel = labels[maxIndex]
         val confidence = result[maxIndex]
 
-        displayResult(predictedLabel, confidence)
+        displayResult(predictedLabel, confidence)  // Display the result
+    }
+
+    private fun convertBitmapToByteBuffer(bitmap: Bitmap): ByteBuffer {
+        val inputSize = 224
+        val byteBuffer = ByteBuffer.allocateDirect(4 * inputSize * inputSize * 3)
+        byteBuffer.order(ByteOrder.nativeOrder())
+
+        // Get pixel data from Bitmap and add to ByteBuffer
+        val intValues = IntArray(inputSize * inputSize)
+        bitmap.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+
+        for (pixelValue in intValues) {
+            byteBuffer.putFloat((pixelValue shr 16 and 0xFF).toFloat())  // Red
+            byteBuffer.putFloat((pixelValue shr 8 and 0xFF).toFloat())   // Green
+            byteBuffer.putFloat((pixelValue and 0xFF).toFloat())         // Blue
+        }
+        return byteBuffer
     }
 
     private fun displayResult(label: String, confidence: Float) {
         runOnUiThread {
-            val resultText = "Predicted: $label"
+            val resultText = "Predicted: $label\nConfidence: ${confidence * 100}%"
             resultTextView.text = resultText
         }
     }

@@ -124,7 +124,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createImageUri(): Uri {
-        val image = File(filesDir, "camera_photos.png")
+        val timestamp = System.currentTimeMillis()  // Generate a timestamp
+        val image = File(filesDir, "camera_photos_$timestamp.png")  // Create a unique image file
+
         return FileProvider.getUriForFile(
             this,
             "${BuildConfig.APPLICATION_ID}.fileprovider",
@@ -147,30 +149,10 @@ class MainActivity : AppCompatActivity() {
         if (readPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
-
         if (listPermissionsNeeded.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(arrayOfNulls(0)), 100)
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toTypedArray(), 1)
             return false
         }
         return true
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            100 -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    imageUri = createImageUri()
-                    captureImage.launch(imageUri)
-                } else {
-                    Log.e("MainActivity", "Permission denied")
-                }
-                return
-            }
-        }
     }
 }
