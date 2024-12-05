@@ -1,6 +1,6 @@
-acne
-dermatitis
-eosinophilicplaque
-kutu
-rodentulcer
-sehat
+Acne
+Dermatitis Alergi
+Eosinophilic Plaque
+Kutu
+Rodent Ulcer
+Sehat
