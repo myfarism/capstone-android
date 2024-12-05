@@ -20,10 +20,10 @@ import java.io.File
 class BerandaFragment : Fragment() {
 
     private lateinit var imageUri: Uri
-    private val captureImage = registerForActivityResult(ActivityResultContracts.TakePicture()) {
-        if (it) {
+    private val captureImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success) {
             val intent = Intent(activity, ScanActivity::class.java).apply {
-                putExtra("imageUri", imageUri)
+                putExtra("imageUri", imageUri.toString())
                 activity?.grantUriPermission(
                     "com.example.capstonebangkitpawers",
                     imageUri,
@@ -34,7 +34,7 @@ class BerandaFragment : Fragment() {
         }
     }
 
-            override fun onCreateView(
+    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -53,6 +53,7 @@ class BerandaFragment : Fragment() {
             val intent = Intent(activity, HistoryActivity::class.java)
             startActivity(intent)
         }
+
         map.setOnClickListener {
             val intent = Intent(activity, MapsActivity::class.java)
             startActivity(intent)
@@ -62,13 +63,12 @@ class BerandaFragment : Fragment() {
     }
 
     private fun createImageUri(): Uri {
-        val file = File(requireContext().filesDir, "camera_photos.png")
+        val timestamp = System.currentTimeMillis()
+        val file = File(requireContext().filesDir, "camera_photo_$timestamp.png")
         return FileProvider.getUriForFile(
             requireContext(),
             "com.example.capstonebangkitpawers.fileprovider",
             file
         )
     }
-
-
 }
