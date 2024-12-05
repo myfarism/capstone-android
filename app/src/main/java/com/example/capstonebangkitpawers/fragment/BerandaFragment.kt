@@ -19,21 +19,6 @@ import java.io.File
 
 class BerandaFragment : Fragment() {
 
-    private lateinit var imageUri: Uri
-    private val captureImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            val intent = Intent(activity, ScanActivity::class.java).apply {
-                putExtra("imageUri", imageUri.toString())
-                activity?.grantUriPermission(
-                    "com.example.capstonebangkitpawers",
-                    imageUri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-            }
-            startActivity(intent)
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,8 +30,8 @@ class BerandaFragment : Fragment() {
         val map: ImageView = view.findViewById(R.id.map)
 
         pindai.setOnClickListener {
-            imageUri = createImageUri()
-            captureImage.launch(imageUri)
+            val intent = Intent(activity, ScanActivity::class.java)
+            startActivity(intent)
         }
 
         riwayat.setOnClickListener {
@@ -60,15 +45,5 @@ class BerandaFragment : Fragment() {
         }
 
         return view
-    }
-
-    private fun createImageUri(): Uri {
-        val timestamp = System.currentTimeMillis()
-        val file = File(requireContext().filesDir, "camera_photo_$timestamp.png")
-        return FileProvider.getUriForFile(
-            requireContext(),
-            "com.example.capstonebangkitpawers.fileprovider",
-            file
-        )
     }
 }
