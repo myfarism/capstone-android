@@ -12,4 +12,6 @@
     <string name="ubah_sandi">Ubah Sandi</string>
     <string name="name">Name</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="back_button">Button Kembali</string>
+    <string name="history_image">Gambar Riwayat Scan</string>
 </resources>
