@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -21,7 +22,7 @@ android {
         buildConfigField("String", "WEB_CLIENT_ID", "\"885069307978-tg511r8r4bjrn5l7svdmnal9ar95h8jh.apps.googleusercontent.com\"")
         buildConfigField("String", "DATABASE_URL", "\"https://capstone-project-796f7-default-rtdb.asia-southeast1.firebasedatabase.app\"")
 
-        resValue("string", "google_maps_api_key", project.hasProperty("google_maps_api_key").toString())
+        resValue("string", "GMAPS_API", "\"AIzaSyBhYdj3wdkkvvf03JHeO8nK88KQ-AIRkzk\"")
     }
 
     aaptOptions {

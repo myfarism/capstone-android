@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +17,21 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.R
 import com.example.capstonebangkitpawers.databinding.ActivityScanBinding
+import com.example.capstonebangkitpawers.services.Riwayat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import org.tensorflow.lite.Interpreter
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ScanActivity : AppCompatActivity() {
 
@@ -180,8 +190,63 @@ class ScanActivity : AppCompatActivity() {
         val predictedLabel = labels[maxIndex]
         val confidence = result[maxIndex]
 
+        saveToHistory(imageUri, predictedLabel)
+
         sendResultToOutputActivity(imageUri, predictedLabel, confidence)
     }
+
+    private fun saveToHistory(imageUri: Uri, predictedLabel: String) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
+        val database = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL)
+        val riwayatRef = database.reference.child("riwayat").child(userId)
+
+        val currentDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+
+        val imagePath = saveImageToInternalStorage(imageUri)
+
+        if (imagePath != null) {
+            val riwayat = Riwayat(
+                userId,
+                imagePath,  // Simpan path file lokal di sini
+                predictedLabel,
+                currentDate
+            )
+
+            riwayatRef.push().setValue(riwayat).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("ScanActivity", "Result saved to history")
+                } else {
+                    Log.d("ScanActivity", "Failed to save result")
+                }
+            }
+        } else {
+            Log.d("ScanActivity", "Failed to save image to local storage")
+        }
+    }
+
+    private fun saveImageToInternalStorage(imageUri: Uri): String? {
+        val contentResolver = applicationContext.contentResolver
+        val inputStream = contentResolver.openInputStream(imageUri)
+
+        val directory = filesDir
+        val fileName = "image_${System.currentTimeMillis()}.jpg"
+        val file = File(directory, fileName)
+
+        val outputStream = FileOutputStream(file)
+
+        try {
+            inputStream?.copyTo(outputStream)
+            return file.absolutePath
+        } catch (e: IOException) {
+            e.printStackTrace()
+            return null
+        } finally {
+            inputStream?.close()
+            outputStream.close()
+        }
+    }
+
+
 
     private fun convertBitmapToByteBuffer(bitmap: Bitmap): ByteBuffer {
         val inputSize = 224
