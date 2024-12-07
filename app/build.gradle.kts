@@ -21,8 +21,6 @@ android {
 
         buildConfigField("String", "WEB_CLIENT_ID", "\"885069307978-tg511r8r4bjrn5l7svdmnal9ar95h8jh.apps.googleusercontent.com\"")
         buildConfigField("String", "DATABASE_URL", "\"https://capstone-project-796f7-default-rtdb.asia-southeast1.firebasedatabase.app\"")
-
-        resValue("string", "GMAPS_API", "\"API_HERE\"")
     }
 
     aaptOptions {
@@ -68,6 +66,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.storage.ktx)
     implementation(libs.play.services.maps)
+    implementation(libs.places)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -91,6 +90,8 @@ dependencies {
     implementation ("androidx.recyclerview:recyclerview:1.3.0")
 
     implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("com.google.android.gms:play-services-places:17.1.0")
+    implementation("com.google.android.libraries.places:places:3.0.0")
 
     implementation("androidx.credentials:credentials:1.5.0-beta01")
     implementation("androidx.credentials:credentials-play-services-auth:1.5.0-beta01")
