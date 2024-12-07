@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
@@ -11,36 +11,40 @@
     android:layout_marginRight="16dp"
     android:layout_marginBottom="16dp"
     card_view:cardCornerRadius="10dp">
-    
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="332dp"
+        android:layout_width="match_parent"
         android:layout_height="62dp">
 
-        <ImageView
-            android:layout_width="332dp"
-            android:layout_height="62dp"
-            android:src="@drawable/cream_chatbot"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/cream"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:weightSum="1">
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/logopawersfull"
-            tools:layout_editor_absoluteX="37dp"
-            tools:layout_editor_absoluteY="16dp" />
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="Logo PAWERS"
+                android:src="@drawable/logopawersfull" />
 
-        <TextView
-            android:id="@+id/tv_item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            card_view:layout_constraintStart_toEndOf="@+id/imageView5"
-            tools:layout_editor_absoluteY="18dp"
-            tools:text="Judul Chatbot" />
+            <TextView
+                android:id="@+id/tv_item_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:text="Judul Chatbot"
+                android:textColor="@color/black"
+                android:textSize="20sp" /> <!-- Text fills the remaining space -->
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
