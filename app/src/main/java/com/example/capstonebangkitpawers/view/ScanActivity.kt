@@ -196,7 +196,7 @@ class ScanActivity : AppCompatActivity() {
     }
 
     private fun saveToHistory(imageUri: Uri, predictedLabel: String) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         val database = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL)
         val riwayatRef = database.reference.child("riwayat").child(userId)
 
@@ -207,7 +207,7 @@ class ScanActivity : AppCompatActivity() {
         if (imagePath != null) {
             val riwayat = Riwayat(
                 userId,
-                imagePath,  // Simpan path file lokal di sini
+                imagePath,
                 predictedLabel,
                 currentDate
             )

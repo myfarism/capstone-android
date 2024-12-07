@@ -9,7 +9,7 @@ class CheckPenyakit {
 
     fun checkPenyakit(penyakitRef: DatabaseReference, predictedLabel: String, callback: (Penyakit?) -> Unit) {
         if (predictedLabel == "Kutu") {
-            penyakitRef.orderByChild("nama").equalTo("kutu")
+            penyakitRef.orderByChild("nama").equalTo("Kutu")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {

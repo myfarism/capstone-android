@@ -15,4 +15,5 @@
     <string name="back_button">Button Kembali</string>
     <string name="history_image">Gambar Riwayat Scan</string>
     <string name="GMAPS_API_KEY">API_KEY</string>
+    <string name="chat_view">Chat</string>
 </resources>
