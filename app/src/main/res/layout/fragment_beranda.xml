@@ -21,11 +21,16 @@
             android:orientation="vertical"
             android:padding="3dp">
 
+            <!-- HorizontalScrollView to contain the cards -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="15dp">
+                    android:orientation="horizontal">
 
                     <!-- Card 1 -->
                     <LinearLayout
@@ -99,13 +104,13 @@
                             android:layout_height="101dp"
                             android:background="@drawable/background_white">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="top|start"
-                            android:layout_marginStart="-45dp"
-                            android:layout_marginTop="-10dp"
-                            app:srcCompat="@drawable/cat_home2"/>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|start"
+                                android:layout_marginStart="-45dp"
+                                android:layout_marginTop="-10dp"
+                                app:srcCompat="@drawable/cat_home2"/>
 
                             <ImageView
                                 android:id="@+id/history"
@@ -135,7 +140,9 @@
                             android:gravity="center"
                             android:layout_marginTop="10dp" />
                     </LinearLayout>
+
                 </LinearLayout>
+            </HorizontalScrollView>
 
             <ImageView
                 android:id="@+id/map"

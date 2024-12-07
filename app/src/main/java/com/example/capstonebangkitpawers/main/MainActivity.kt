@@ -38,15 +38,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar
     private lateinit var auth: FirebaseAuth
 
-    private lateinit var imageUri: Uri
-    private val captureImage = registerForActivityResult(ActivityResultContracts.TakePicture()) {
-        if (it) {
-            val intent = Intent(this, ScanActivity::class.java)
-            intent.putExtra("imageUri", imageUri.toString())
-            startActivity(intent)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -63,8 +54,7 @@ class MainActivity : AppCompatActivity() {
         val scanIcon: ImageView = findViewById(R.id.captureImgBtn)
         scanIcon.setOnClickListener {
             if (checkAndRequestPermissions()) {
-                imageUri = createImageUri()
-                captureImage.launch(imageUri)
+                navigateToScanActivity()
             }
         }
 
@@ -123,32 +113,19 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun createImageUri(): Uri {
-        val timestamp = System.currentTimeMillis()  // Generate a timestamp
-        val image = File(filesDir, "camera_photos_$timestamp.png")  // Create a unique image file
-
-        return FileProvider.getUriForFile(
-            this,
-            "${BuildConfig.APPLICATION_ID}.fileprovider",
-            image
-        )
+    private fun navigateToScanActivity() {
+        val intent = Intent(this, ScanActivity::class.java)
+        startActivity(intent)
     }
 
     private fun checkAndRequestPermissions(): Boolean {
         val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-        val writePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val readPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-
         val listPermissionsNeeded = ArrayList<String>()
+
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA)
         }
-        if (writePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-        if (readPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
+
         if (listPermissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded.toTypedArray(), 1)
             return false
