@@ -32,7 +32,7 @@ class DataDiriActivity : AppCompatActivity() {
     private val getImageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
             imageUri = it
-            binding.profileImage1.setImageURI(it)
+            binding.profileImage.setImageURI(it)
         }
     }
 
@@ -55,7 +55,7 @@ class DataDiriActivity : AppCompatActivity() {
 
         loadUserData()
 
-        binding.profileImage.setOnClickListener {
+        binding.profileImageContainer.setOnClickListener {
             openGalleryForImage()
         }
 
@@ -84,7 +84,7 @@ class DataDiriActivity : AppCompatActivity() {
                         val imageFile = File(profileImagePath)
                         if (imageFile.exists()) {
                             val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
-                            binding.profileImage1.setImageBitmap(bitmap)
+                            binding.profileImage.setImageBitmap(bitmap)
                         }
                     }
                 }
@@ -134,7 +134,7 @@ class DataDiriActivity : AppCompatActivity() {
                         mainViewModel.updateProfileImage(uid, file.absolutePath)
                         Toast.makeText(this, "Foto profil berhasil diperbarui", Toast.LENGTH_SHORT).show()
                         val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-                        binding.profileImage1.setImageBitmap(bitmap)
+                        binding.profileImage.setImageBitmap(bitmap)
                         goToHome()
                     } else {
                         Toast.makeText(this, "Gagal memperbarui foto profil", Toast.LENGTH_SHORT).show()
