@@ -27,6 +27,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 class ChatViewActivity : AppCompatActivity() {
 
@@ -59,13 +60,15 @@ class ChatViewActivity : AppCompatActivity() {
         userId = auth.currentUser?.uid ?: ""  // Use Firebase Auth user ID or a fallback
 
         // Generate a unique chatId (this could be generated or passed from the previous screen)
-        chatId = intent.getStringExtra("CHAT_ID") ?: return
+        chatId = intent.getStringExtra("CHAT_ID") ?: run {
+            Toast.makeText(this, "Chat ID is missing!", Toast.LENGTH_SHORT).show()
+            finish()  // Tutup activity jika tidak ada chatId
+            return
+        }
+
 
         // Initialize Firebase Realtime Database reference
         database = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL).reference.child("chatbot").child(userId).child(chatId)
-
-        // Check if this is the first time the chat is created
-        checkAndCreateChatRoom()
 
         // Setup RecyclerView and Adapter
         rvChat.layoutManager = LinearLayoutManager(this).apply {
@@ -77,60 +80,43 @@ class ChatViewActivity : AppCompatActivity() {
 
         // Set onClickListener for the send button
         btnSend.setOnClickListener {
-            val userMessage = etUserInput.text.toString()
-            if (userMessage.isNotEmpty()) {
-                // Send user message
-                val timestamp = getCurrentTime()
-                val message = Message("You", userMessage, timestamp, true)
-
-                // Add message to the list and update RecyclerView
-                messageList.add(message)
-                messageAdapter.notifyItemInserted(messageList.size - 1)
-                rvChat.scrollToPosition(messageList.size - 1)
-                etUserInput.text.clear()
-
-                // Save user message to Firebase
-                saveMessageToFirebase(message)
-
-                // Send the message to chatbot
-                sendMessageToChatbot(userMessage)
-            } else {
-                Toast.makeText(this, "Please enter a message!", Toast.LENGTH_SHORT).show()
-            }
+            newChat()
         }
 
-        if (chatId.isNotEmpty()) {
+        if (chatId.isEmpty()) {
+            // Buat logika untuk percakapan baru jika chatId kosong
+            chatId = database.push().key ?: UUID.randomUUID().toString()
+            database.child("created_at").setValue(System.currentTimeMillis().toString())
+        } else {
             fetchChatDetails()
         }
+
     }
 
-    // Function to check if the chat room exists and create it with a timestamp if necessary
-    private fun checkAndCreateChatRoom() {
-        val chatRoomRef = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL).reference.child("chatbot").child(userId).child(chatId)
+    private fun newChat() {
+        val userMessage = etUserInput.text.toString()
+        if (userMessage.isNotEmpty()) {
+            // Send user message
+            val timestamp = getCurrentTime()
+            val message = Message("You", userMessage, timestamp, true)
 
-        // Check if the room already exists
-        chatRoomRef.get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val snapshot = task.result
-                if (!snapshot.exists()) {
-                    // Room does not exist, so create it with a timestamp
-                    val timestamp = ServerValue.TIMESTAMP
-                    val chatRoomData = mapOf(
-                        "created_at" to timestamp,
-                        "messages" to mapOf<String, Any>()  // Messages initially empty
-                    )
+            // Add message to the list and update RecyclerView
+            messageList.add(message)
+            messageAdapter.notifyItemInserted(messageList.size - 1)
+            rvChat.scrollToPosition(messageList.size - 1)
+            etUserInput.text.clear()
 
-                    chatRoomRef.setValue(chatRoomData).addOnCompleteListener { createTask ->
-                        if (createTask.isSuccessful) {
-                            Log.d("ChatViewActivity", "Chat room created with timestamp.")
-                        } else {
-                            Log.e("ChatViewActivity", "Failed to create chat room: ${createTask.exception}")
-                        }
-                    }
-                }
-            } else {
-                Log.e("ChatViewActivity", "Failed to check if room exists: ${task.exception}")
-            }
+            Log.d("ChatViewActivity", "User message: $userMessage")
+            database.child("created_at").setValue(System.currentTimeMillis().toString())
+
+
+            // Save user message to Firebase
+            saveMessageToFirebase(message)
+
+            // Send the message to chatbot
+            sendMessageToChatbot(userMessage)
+        } else {
+            Toast.makeText(this, "Please enter a message!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -142,8 +128,8 @@ class ChatViewActivity : AppCompatActivity() {
                     // Clear previous messages
                     messageList.clear()
 
-                    // Get created_at timestamp
-                    createdAt = snapshot.child("created_at").value.toString()
+                    // Get created_at timestamp, or use a fallback value if null
+                    createdAt = snapshot.child("created_at").value?.toString() ?: "0"
 
                     // Iterate through all messages in the conversation
                     for (messageSnapshot in snapshot.child("messages").children) {
@@ -160,9 +146,13 @@ class ChatViewActivity : AppCompatActivity() {
                     messageAdapter.notifyDataSetChanged()
                     rvChat.scrollToPosition(messageList.size - 1)
 
-                    // Display the creation timestamp of the chat room
-                    val createdDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(createdAt.toLong()))
-                    Log.d("ChatViewActivity", "Chat room created at: $createdDate")
+                    // Display the creation timestamp of the chat room if not "0"
+                    if (createdAt != "0") {
+                        val createdDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date(createdAt.toLong()))
+                        Log.d("ChatViewActivity", "Chat room created at: $createdDate")
+                    } else {
+                        Log.d("ChatViewActivity", "Created at timestamp is null or not available.")
+                    }
                 } else {
                     Log.d("ChatViewActivity", "No messages found.")
                 }
@@ -173,6 +163,7 @@ class ChatViewActivity : AppCompatActivity() {
             }
         })
     }
+
 
     private fun saveMessageToFirebase(message: Message) {
         val messageId = database.child("messages").push().key  // Generate unique key for each message

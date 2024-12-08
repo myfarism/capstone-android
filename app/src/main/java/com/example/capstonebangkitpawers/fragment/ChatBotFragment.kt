@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.util.UUID
 
 class ChatBotFragment : Fragment() {
 
@@ -59,17 +60,16 @@ class ChatBotFragment : Fragment() {
 
         val btnChat: FloatingActionButton = view.findViewById(R.id.btnChat)
         btnChat.setOnClickListener {
-            // Membuat chatId baru untuk percakapan baru
-            val newChatId = database.push().key ?: ""  // Membuat chatId baru menggunakan Firebase push key
-
-            // Membuka ChatViewActivity dan mengirimkan chatId baru
+            val chatId = UUID.randomUUID().toString()  // Buat chatId baru untuk percakapan baru
             val intent = Intent(requireContext(), ChatViewActivity::class.java)
-            intent.putExtra("CHAT_ID", newChatId)  // Kirimkan chatId baru
+            intent.putExtra("CHAT_ID", chatId)  // Kirimkan chatId ke activity
             startActivity(intent)
         }
 
+
         return view
     }
+
 
     private fun fetchChatHistory() {
         // Mengambil data percakapan dari Firebase
@@ -81,10 +81,18 @@ class ChatBotFragment : Fragment() {
                         val chatId = chatSnapshot.key ?: continue
                         val content = chatSnapshot.child("content").value.toString()
                         val senderName = chatSnapshot.child("senderName").value.toString()
-                        val timestamp = chatSnapshot.child("timestamp").value.toString()
+
+                        // Memastikan timestamp valid
+                        val timestampValue = chatSnapshot.child("timestamp").value
+                        val timestamp = if (timestampValue is Long) {
+                            timestampValue
+                        } else {
+                            // Jika timestamp tidak valid, beri nilai default
+                            System.currentTimeMillis()  // Gunakan timestamp saat ini jika tidak ada
+                        }
 
                         // Membuat objek ChatHistory dan menambahkannya ke daftar
-                        val chatHistory = ChatHistory(chatId, userId, content, senderName, timestamp)
+                        val chatHistory = ChatHistory(chatId, userId, content, senderName, timestamp.toString())
                         chatHistoryList.add(chatHistory)
                     }
                     // Memberi tahu adapter untuk memperbarui tampilan
@@ -99,6 +107,8 @@ class ChatBotFragment : Fragment() {
             }
         })
     }
+
+
 
     private fun openChatDetail(chatHistory: ChatHistory) {
         // Membuka detail percakapan lebih lanjut
