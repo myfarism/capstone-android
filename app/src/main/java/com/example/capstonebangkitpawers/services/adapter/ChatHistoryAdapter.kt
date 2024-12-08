@@ -36,22 +36,24 @@ class ChatHistoryAdapter(
     override fun onBindViewHolder(holder: ChatHistoryViewHolder, position: Int) {
         val chatHistory = chatHistoryList[position]
 
-        // Check if chatId is not empty
+        // Cek apakah chatId tidak kosong dan memiliki pesan
         if (chatHistory.chatId.isNotEmpty()) {
             checkMessagesExistence(chatHistory.userId, chatHistory.chatId) { hasMessages ->
                 if (hasMessages) {
-                    holder.bind(chatHistory) // Show item if there are messages
+                    // Hanya tampilkan jika chat memiliki pesan
+                    holder.bind(chatHistory)
                 } else {
-                    // Mark this position for removal
-                    positionsToRemove.add(position)
-                    // Remove the item from list (postponed until the end of the method)
-                    notifyDataSetChanged() // Refresh the entire list
+                    // Jangan tampilkan chat kosong dan hapus dari list
+                    removeChatFromFirebase(chatHistory.userId, chatHistory.chatId)
+                    chatHistoryList.removeAt(position)
+                    notifyItemRemoved(position)
                 }
             }
         } else {
-            holder.itemView.visibility = View.GONE // Hide item if there's no chatId
+            holder.itemView.visibility = View.GONE // Sembunyikan item jika tidak ada chatId
         }
     }
+
 
     override fun getItemCount(): Int {
         return chatHistoryList.size
@@ -120,16 +122,39 @@ class ChatHistoryAdapter(
 
         chatRef.child("messages").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Return true if "messages" exists and is not empty
-                callback(snapshot.exists() && snapshot.childrenCount > 0)
+                // Pastikan chat memiliki pesan sebelum menampilkannya
+                if (snapshot.exists() && snapshot.childrenCount > 0) {
+                    callback(true)
+                } else {
+                    // Menganggap chat kosong jika tidak ada pesan
+                    callback(false)
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.e("Firebase", "Error checking messages", error.toException())
-                callback(false) // Assume no messages if there's an error
+                callback(false) // Anggap tidak ada pesan jika terjadi error
             }
         })
     }
+
+
+
+    // Remove chat from Firebase if there are no messages
+    private fun removeChatFromFirebase(userId: String, chatId: String) {
+        val chatRef = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL).getReference("chatbot")
+            .child(userId)
+            .child(chatId)
+
+        chatRef.removeValue().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d("Firebase", "Chat with no messages removed successfully from Firebase.")
+            } else {
+                Log.e("Firebase", "Failed to remove chat from Firebase.", task.exception)
+            }
+        }
+    }
 }
+
 
 
