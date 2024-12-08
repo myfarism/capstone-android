@@ -7,7 +7,7 @@
     android:background="@color/white"
     tools:context=".fragment.ChatBotFragment">
 
-
+    <!-- ImageView for Powie -->
     <ImageView
         android:id="@+id/powie"
         android:layout_width="wrap_content"
@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.093" />
 
+    <!-- TextView for Powie message -->
     <TextView
         android:id="@+id/textPowie"
         android:layout_width="wrap_content"
@@ -34,45 +35,48 @@
         app:layout_constraintTop_toBottomOf="@+id/powie"
         app:layout_constraintVertical_bias="0.0" />
 
-
+    <!-- RecyclerView for chat list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListChatBot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
         android:overScrollMode="never"
         android:scrollbarSize="0dp"
-        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textPowie"
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item_chatbot" />
 
+    <!-- CoordinatorLayout for floating button -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/rvListChatBot">
+
+        <!-- Floating Action Button -->
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnChat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="25dp"
-            android:src="@drawable/baseline_playlist_add_24"
-            app:backgroundTint="@color/green"
-            app:layout_anchorGravity="bottom|right|end"
-            app:rippleColor="#789395"
-            tools:ignore="ContentDescription,RtlHardcoded,SpeakableTextPresentCheck" />
+        android:id="@+id/btnChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="25dp"
+        android:src="@drawable/baseline_playlist_add_24"
+        app:backgroundTint="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rvListChatBot"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976"
+        app:rippleColor="#789395" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
