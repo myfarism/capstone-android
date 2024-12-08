@@ -4,16 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:maxWidth="300dp"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     android:background="@android:color/white">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/layoutChat"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:maxWidth="300dp"
+        android:layout_gravity="start|end"
+        android:weightSum="1">
 
         <!-- Nama Pengirim -->
         <TextView
@@ -29,7 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Message content goes here"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:maxWidth="300dp"/>
 
         <!-- Jam / Timestamp -->
         <TextView
@@ -40,6 +46,5 @@
             android:textSize="12sp"
             android:textColor="@android:color/darker_gray"
             android:layout_marginTop="4dp"/>
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

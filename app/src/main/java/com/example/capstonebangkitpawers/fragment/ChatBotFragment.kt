@@ -41,14 +41,13 @@ class ChatBotFragment : Fragment() {
 
         // Mendapatkan userId dari FirebaseAuth
         val auth = FirebaseAuth.getInstance()
-        userId = auth.currentUser?.uid ?: "default_user_id"
+        userId = auth.currentUser?.uid ?: ""
 
         // Menyiapkan RecyclerView
         recyclerView = view.findViewById(R.id.rvListChatBot)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         chatHistoryAdapter = ChatHistoryAdapter(chatHistoryList) { chatHistory ->
-            // Menangani item yang diklik, bisa membuka percakapan lebih detail
-            openChatDetail(chatHistory)
+            openChatDetail(chatHistory)  // Open existing chat
         }
         recyclerView.adapter = chatHistoryAdapter
 
@@ -60,8 +59,12 @@ class ChatBotFragment : Fragment() {
 
         val btnChat: FloatingActionButton = view.findViewById(R.id.btnChat)
         btnChat.setOnClickListener {
-            // Intent untuk membuka Activity lain
+            // Membuat chatId baru untuk percakapan baru
+            val newChatId = database.push().key ?: ""  // Membuat chatId baru menggunakan Firebase push key
+
+            // Membuka ChatViewActivity dan mengirimkan chatId baru
             val intent = Intent(requireContext(), ChatViewActivity::class.java)
+            intent.putExtra("CHAT_ID", newChatId)  // Kirimkan chatId baru
             startActivity(intent)
         }
 
@@ -72,17 +75,23 @@ class ChatBotFragment : Fragment() {
         // Mengambil data percakapan dari Firebase
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                chatHistoryList.clear()
-                for (chatSnapshot in snapshot.children) {
-                    val chatId = chatSnapshot.key ?: continue
-                    val lastMessage = chatSnapshot.child("lastMessage").value.toString()
-                    val timestamp = chatSnapshot.child("timestamp").value.toString()
+                chatHistoryList.clear()  // Kosongkan daftar sebelum mengambil data baru
+                if (snapshot.exists()) {
+                    for (chatSnapshot in snapshot.children) {
+                        val chatId = chatSnapshot.key ?: continue
+                        val content = chatSnapshot.child("content").value.toString()
+                        val senderName = chatSnapshot.child("senderName").value.toString()
+                        val timestamp = chatSnapshot.child("timestamp").value.toString()
 
-                    // Membuat objek ChatHistory dan menambahkannya ke daftar
-                    val chatHistory = ChatHistory(chatId, lastMessage, timestamp)
-                    chatHistoryList.add(chatHistory)
+                        // Membuat objek ChatHistory dan menambahkannya ke daftar
+                        val chatHistory = ChatHistory(chatId, userId, content, senderName, timestamp)
+                        chatHistoryList.add(chatHistory)
+                    }
+                    // Memberi tahu adapter untuk memperbarui tampilan
+                    chatHistoryAdapter.notifyDataSetChanged()
+                } else {
+                    Log.d("ChatBotFragment", "No chat history found.")
                 }
-                chatHistoryAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -92,9 +101,9 @@ class ChatBotFragment : Fragment() {
     }
 
     private fun openChatDetail(chatHistory: ChatHistory) {
-        // Membuka detail percakapan lebih lanjut, misalnya dengan Activity atau Fragment baru
+        // Membuka detail percakapan lebih lanjut
         val intent = Intent(requireContext(), ChatViewActivity::class.java)
-        intent.putExtra("CHAT_ID", chatHistory.chatId)
+        intent.putExtra("CHAT_ID", chatHistory.chatId)  // Kirimkan chatId dari history
         startActivity(intent)
     }
 }
