@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.databinding.ActivityDataDiriBinding
 import com.example.capstonebangkitpawers.fragment.ProfileFragment
-import com.example.capstonebangkitpawers.main.MainActivity
 import com.example.capstonebangkitpawers.main.MainViewModel
 import com.example.capstonebangkitpawers.main.ViewModelFactory
 import com.google.firebase.auth.FirebaseAuth

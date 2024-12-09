@@ -20,7 +20,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.*
 import com.google.android.libraries.places.api.net.*
@@ -48,7 +47,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize Places API
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext, GMAPS_API)
         }
@@ -64,7 +62,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         })
 
-        // Request location permission if not granted
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -76,7 +73,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    // Get user's current location
     private fun getUserLocation() {
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (ActivityCompat.checkSelfPermission(
@@ -100,20 +96,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    // Move camera to user's location
     private fun moveToUserLocation(location: Location) {
         val userLatLng = LatLng(location.latitude, location.longitude)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15f))
     }
 
-    // Search for nearby veterinarians using Google Places API
     private fun searchNearbyVet(location: Location) {
         val userLatLng = LatLng(location.latitude, location.longitude)
 
-        // Daftar query yang ingin digunakan
         val queries = listOf("dokter hewan", "vet clinic", "pet care", "pet", "klinik hewan")
 
-        // Kirim permintaan untuk setiap query
         queries.forEach { query ->
             val requestBuilder = FindAutocompletePredictionsRequest.builder()
                 .setLocationBias(RectangularBounds.newInstance(
@@ -123,13 +115,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 .setQuery(query)
                 .build()
 
-            // Panggil API untuk mendapatkan prediksi autocomplete
             placesClient.findAutocompletePredictions(requestBuilder)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val response = task.result
                         response?.autocompletePredictions?.forEach { prediction ->
-                            // Ambil placeId untuk mencari detail tempat
                             val placeId = prediction.placeId
                             fetchPlaceDetails(placeId)
                         }
@@ -138,19 +128,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
         }
-
-        // Tampilkan lingkaran di sekitar lokasi pengguna untuk menunjukkan radius pencarian
-        mMap.addCircle(
-            CircleOptions()
-                .center(userLatLng)
-                .radius(500.0) // Radius dalam meter
-                .strokeWidth(1f)
-                .strokeColor(0x220000FF)
-                .fillColor(0x220000FF)
-        )
     }
 
-    // Fungsi untuk mengambil detail tempat berdasarkan placeId
     private fun fetchPlaceDetails(placeId: String) {
         val placeFields = listOf(Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
         val request = FetchPlaceRequest.builder(placeId, placeFields).build()
@@ -160,7 +139,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 val place = response.place
                 val vetLocation = place.latLng
                 if (vetLocation != null) {
-                    // Menambahkan marker pada peta untuk setiap klinik hewan yang ditemukan
                     mMap.addMarker(
                         MarkerOptions()
                             .position(vetLocation)

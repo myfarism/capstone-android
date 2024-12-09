@@ -4,13 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
-import android.widget.Toolbar
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.capstonebangkitpawers.R
-import com.example.capstonebangkitpawers.databinding.ActivitySettingsBinding
 import com.example.capstonebangkitpawers.databinding.ActivityUbahSandiBinding
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth

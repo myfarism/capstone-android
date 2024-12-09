@@ -7,15 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.R
 import com.example.capstonebangkitpawers.services.ChatHistory
-import com.example.capstonebangkitpawers.services.Message
 import com.example.capstonebangkitpawers.services.adapter.ChatHistoryAdapter
-import com.example.capstonebangkitpawers.services.adapter.MessageAdapter
 import com.example.capstonebangkitpawers.view.ChatViewActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
@@ -40,22 +37,18 @@ class ChatBotFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_chat_bot, container, false)
 
-        // Mendapatkan userId dari FirebaseAuth
         val auth = FirebaseAuth.getInstance()
         userId = auth.currentUser?.uid ?: ""
 
-        // Menyiapkan RecyclerView
         recyclerView = view.findViewById(R.id.rvListChatBot)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         chatHistoryAdapter = ChatHistoryAdapter(chatHistoryList) { chatHistory ->
-            openChatDetail(chatHistory)  // Open existing chat
+            openChatDetail(chatHistory)
         }
         recyclerView.adapter = chatHistoryAdapter
 
-        // Menginisialisasi Firebase Realtime Database
         database = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL).reference.child("chatbot").child(userId)
 
-        // Mengambil data percakapan
         fetchChatHistory()
 
         val btnChat: FloatingActionButton = view.findViewById(R.id.btnChat)
@@ -72,30 +65,25 @@ class ChatBotFragment : Fragment() {
 
 
     private fun fetchChatHistory() {
-        // Mengambil data percakapan dari Firebase
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                chatHistoryList.clear()  // Kosongkan daftar sebelum mengambil data baru
+                chatHistoryList.clear()
                 if (snapshot.exists()) {
                     for (chatSnapshot in snapshot.children) {
                         val chatId = chatSnapshot.key ?: continue
                         val content = chatSnapshot.child("content").value.toString()
                         val senderName = chatSnapshot.child("senderName").value.toString()
 
-                        // Memastikan timestamp valid
                         val timestampValue = chatSnapshot.child("timestamp").value
                         val timestamp = if (timestampValue is Long) {
                             timestampValue
                         } else {
-                            // Jika timestamp tidak valid, beri nilai default
-                            System.currentTimeMillis()  // Gunakan timestamp saat ini jika tidak ada
+                            System.currentTimeMillis()
                         }
 
-                        // Membuat objek ChatHistory dan menambahkannya ke daftar
                         val chatHistory = ChatHistory(chatId, userId, content, senderName, timestamp.toString())
                         chatHistoryList.add(chatHistory)
                     }
-                    // Memberi tahu adapter untuk memperbarui tampilan
                     chatHistoryAdapter.notifyDataSetChanged()
                 } else {
                     Log.d("ChatBotFragment", "No chat history found.")
@@ -111,7 +99,6 @@ class ChatBotFragment : Fragment() {
 
 
     private fun openChatDetail(chatHistory: ChatHistory) {
-        // Membuka detail percakapan lebih lanjut
         val intent = Intent(requireContext(), ChatViewActivity::class.java)
         intent.putExtra("CHAT_ID", chatHistory.chatId)  // Kirimkan chatId dari history
         startActivity(intent)

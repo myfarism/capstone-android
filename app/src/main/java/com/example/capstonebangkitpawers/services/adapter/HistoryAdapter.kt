@@ -25,7 +25,6 @@ class HistoryAdapter : ListAdapter<Riwayat, HistoryAdapter.ViewHolder>(Riwayat.D
         holder.dateTextView.text = riwayat.date
         holder.predictedLabelTextView.text = riwayat.predictedLabel
 
-        // Ensure that we check for the correct URI type and handle accordingly
         val imageUri = riwayat.imageUri
         if (imageUri != null) {
             // For content URIs, use content resolver with proper permission handling
