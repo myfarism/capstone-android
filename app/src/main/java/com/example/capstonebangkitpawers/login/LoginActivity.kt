@@ -12,8 +12,6 @@ import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.util.Patterns
 import android.view.View
-import android.widget.ProgressBar
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.credentials.CredentialManager
@@ -23,14 +21,10 @@ import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.lifecycleScope
 import com.example.capstonebangkitpawers.BuildConfig
-import com.example.capstonebangkitpawers.R
 import com.example.capstonebangkitpawers.databinding.ActivityLoginBinding
 import com.example.capstonebangkitpawers.main.MainActivity
-import com.example.capstonebangkitpawers.main.ViewModelFactory
 import com.example.capstonebangkitpawers.register.RegisterActivity
 import com.example.capstonebangkitpawers.view.ForgotPasswordActivity
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -39,10 +33,6 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
-
-//    private val viewModel by viewModels<LoginViewModel> {
-//        ViewModelFactory.getInstance(this)
-//    }
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
 

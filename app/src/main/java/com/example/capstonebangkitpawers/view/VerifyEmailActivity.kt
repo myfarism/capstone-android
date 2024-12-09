@@ -3,19 +3,11 @@ package com.example.capstonebangkitpawers.view
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.capstonebangkitpawers.BuildConfig
-import com.example.capstonebangkitpawers.R
 import com.example.capstonebangkitpawers.databinding.ActivityVerifyEmailBinding
 import com.example.capstonebangkitpawers.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -107,7 +99,6 @@ class VerifyEmailActivity : AppCompatActivity() {
     }
 
     private fun startResendButtonTimer() {
-        // Nonaktifkan tombol kirim ulang dan tampilkan timer
         binding.btnResend.isEnabled = false
         binding.timerTextView.visibility = View.VISIBLE
 

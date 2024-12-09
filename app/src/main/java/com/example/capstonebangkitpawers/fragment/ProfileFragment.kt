@@ -8,32 +8,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.credentials.ClearCredentialStateRequest
-import androidx.credentials.CredentialManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.R
 import com.example.capstonebangkitpawers.login.LoginActivity.Companion.databaseURL
 import com.example.capstonebangkitpawers.main.MainViewModel
-import com.example.capstonebangkitpawers.main.ViewModelFactory
 import com.example.capstonebangkitpawers.view.DataDiriActivity
 import com.example.capstonebangkitpawers.view.HistoryActivity
 import com.example.capstonebangkitpawers.view.SettingsActivity
 import com.example.capstonebangkitpawers.view.WelcomeActivity
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 class ProfileFragment : Fragment() {
 

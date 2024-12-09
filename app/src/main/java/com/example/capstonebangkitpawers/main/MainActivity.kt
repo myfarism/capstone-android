@@ -3,18 +3,14 @@ package com.example.capstonebangkitpawers.main
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.capstonebangkitpawers.BuildConfig
 import com.example.capstonebangkitpawers.R
@@ -26,14 +22,8 @@ import com.example.capstonebangkitpawers.view.ScanActivity
 import com.example.capstonebangkitpawers.view.WelcomeActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
-
-    private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
-    }
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var toolbar: Toolbar
     private lateinit var auth: FirebaseAuth

@@ -20,35 +20,28 @@ class HistoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHistoryBinding
     private lateinit var historyAdapter: HistoryAdapter
 
-    private val REQUEST_CODE = 1001
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize the RecyclerView with the adapter
-        historyAdapter = HistoryAdapter()  // Use the ListAdapter
+        historyAdapter = HistoryAdapter()
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.historyRecyclerView.adapter = historyAdapter
 
-        // Load the history data from Firebase
         loadHistoryData()
 
-        // Handle the back button press
         binding.btnBack.setOnClickListener {
             onBackPressed()
         }
     }
 
     private fun loadHistoryData() {
-        // Get the user ID (use "anonymous" as fallback if not logged in)
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
 
         val database = FirebaseDatabase.getInstance(BuildConfig.DATABASE_URL)
         val riwayatRef = database.reference.child("riwayat").child(userId)
 
-        // Fetch data from Firebase Realtime Database
         riwayatRef.orderByChild("date").limitToLast(10).get().addOnSuccessListener { snapshot ->
             val historyList = mutableListOf<Riwayat>()
             snapshot.children.forEach { data ->
@@ -58,10 +51,8 @@ class HistoryActivity : AppCompatActivity() {
                 }
             }
 
-            // Submit the list to the adapter to update the UI
             historyAdapter.submitList(historyList)
         }.addOnFailureListener { exception ->
-            // Handle the failure
             Log.e("HistoryActivity", "Failed to load history: ${exception.message}", exception)
             Toast.makeText(this, "Failed to load history. Error: ${exception.message}", Toast.LENGTH_SHORT).show()
         }

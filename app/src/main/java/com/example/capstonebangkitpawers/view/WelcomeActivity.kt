@@ -17,12 +17,8 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.capstonebangkitpawers.databinding.ActivityWelcomeBinding
 import com.example.capstonebangkitpawers.login.LoginActivity
-import com.example.capstonebangkitpawers.main.MainActivity
 import com.example.capstonebangkitpawers.register.RegisterActivity
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.auth
 
 class WelcomeActivity : AppCompatActivity() {
 

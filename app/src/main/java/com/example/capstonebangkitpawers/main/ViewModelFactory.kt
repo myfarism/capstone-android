@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.capstonebangkitpawers.login.LoginViewModel
 import com.example.capstonebangkitpawers.user.UserRepository
 import com.example.capstonebangkitpawers.services.Injection
 
@@ -18,9 +17,6 @@ class ViewModelFactory(
         return when {
             modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(application) as T
-            }
-            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
