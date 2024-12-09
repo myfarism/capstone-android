@@ -2,10 +2,12 @@ package com.example.capstonebangkitpawers.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import com.example.capstonebangkitpawers.R
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +51,7 @@ class ChatViewActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title="Halo aku Powie"
 
         // Initialize views and set up RecyclerView
         etUserInput = findViewById(R.id.messageInput)
@@ -91,6 +94,12 @@ class ChatViewActivity : AppCompatActivity() {
             fetchChatDetails()
         }
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
+
     }
 
     private fun newChat() {
@@ -107,7 +116,7 @@ class ChatViewActivity : AppCompatActivity() {
             etUserInput.text.clear()
 
             Log.d("ChatViewActivity", "User message: $userMessage")
-            database.child("created_at").setValue(System.currentTimeMillis().toString())
+            database.child("created_at").setValue(System.currentTimeMillis())
 
 
             // Save user message to Firebase
@@ -230,5 +239,16 @@ class ChatViewActivity : AppCompatActivity() {
     private fun getCurrentTime(): String {
         val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
         return sdf.format(Date())
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // Ketika tombol kembali di toolbar ditekan
+                onBackPressed() // Memanggil onBackPressed() yang menggunakan dispatcher
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
