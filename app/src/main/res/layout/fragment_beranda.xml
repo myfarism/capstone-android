@@ -39,7 +39,7 @@
                         android:layout_height="239dp"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
-                        android:padding="16dp"
+                        android:padding="14dp"
                         android:layout_marginEnd="25dp"
                         android:background="@drawable/background_cream">
 
@@ -72,6 +72,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pindai"
+                            android:fontFamily="@font/popreg"
                             android:textSize="18sp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
@@ -80,12 +81,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pindai Penyakit Kucingmu dan dapatkan data untuk gejala dan pencegahannya!"
-                            android:textSize="10sp"
-                            android:textColor="#000000"
-                            android:gravity="center"
                             android:layout_marginTop="10dp"
-                            android:textAlignment="center" />
+                            android:fontFamily="@font/popreg"
+                            android:gravity="center"
+                            android:text="Pindai Penyakit Kucingmu dan dapatkan data untuk gejala dan pencegahannya!"
+                            android:textAlignment="center"
+                            android:textColor="#000000"
+                            android:textSize="10sp" />
                     </LinearLayout>
 
                     <!-- Card 2 -->
@@ -95,7 +97,7 @@
                         android:layout_height="239dp"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
-                        android:padding="16dp"
+                        android:padding="14dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/background_green">
 
@@ -127,6 +129,7 @@
                             android:layout_height="wrap_content"
                             android:text="Riwayat"
                             android:textSize="18sp"
+                            android:fontFamily="@font/popreg"
                             android:textColor="#000000"
                             android:textStyle="bold"
                             android:layout_marginTop="15dp" />
@@ -137,6 +140,7 @@
                             android:text="Pindai Penyakit Kucingmu dan dapatkan data untuk gejala dan pencegahannya!"
                             android:textSize="10sp"
                             android:textColor="#000000"
+                            android:fontFamily="@font/popreg"
                             android:gravity="center"
                             android:layout_marginTop="10dp" />
                     </LinearLayout>
