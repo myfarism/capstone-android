@@ -6,8 +6,10 @@ import android.view.MenuItem
 import com.example.capstonebangkitpawers.R
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +56,7 @@ class ChatViewActivity : AppCompatActivity() {
         etUserInput = findViewById(R.id.messageInput)
         rvChat = findViewById(R.id.messageRecyclerView)
         val btnSend: Button = findViewById(R.id.sendButton)
+        val btnDelete: ImageButton = findViewById(R.id.btnDelete)
 
         val auth = FirebaseAuth.getInstance()
         userId = auth.currentUser?.uid ?: ""
@@ -75,6 +78,10 @@ class ChatViewActivity : AppCompatActivity() {
 
         btnSend.setOnClickListener {
             newChat()
+        }
+
+        btnDelete.setOnClickListener {
+            deleteChat()
         }
 
         if (chatId.isEmpty()) {
@@ -222,4 +229,25 @@ class ChatViewActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun deleteChat() {
+        AlertDialog.Builder(this)
+            .setTitle("Konfirmasi")
+            .setMessage("Apakah Anda yakin ingin menghapus percakapan ini?")
+            .setPositiveButton("Ya") { _, _ ->
+                database.removeValue()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "Percakapan berhasil dihapus", Toast.LENGTH_SHORT).show()
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Gagal menghapus percakapan", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            }
+            .setNegativeButton("Tidak", null)
+            .show()
+    }
+
+
 }

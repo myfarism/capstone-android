@@ -19,7 +19,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:contentDescription="Logo"
-            android:src="@drawable/logopawersfull" />
+            android:src="@drawable/pawerslogo" />
 
         <TextView
             android:id="@+id/toolbar_title"

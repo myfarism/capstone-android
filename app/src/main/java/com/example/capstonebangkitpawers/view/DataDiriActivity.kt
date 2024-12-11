@@ -5,10 +5,12 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.capstonebangkitpawers.BuildConfig
+import com.example.capstonebangkitpawers.R
 import com.example.capstonebangkitpawers.databinding.ActivityDataDiriBinding
 import com.example.capstonebangkitpawers.fragment.ProfileFragment
 import com.example.capstonebangkitpawers.main.MainViewModel
@@ -66,7 +68,7 @@ class DataDiriActivity : AppCompatActivity() {
             if (imageUri != null) {
                 saveProfileImageLocally(imageUri!!)
             } else if (name.isNotEmpty()) {
-                goToHome()
+                //goToHome()
             }
         }
     }
@@ -99,7 +101,7 @@ class DataDiriActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     mainViewModel.updateName(uid, name)
                     Toast.makeText(this, "Nama berhasil diperbarui", Toast.LENGTH_SHORT).show()
-                    goToHome()
+                    //goToHome()
                 } else {
                     Toast.makeText(this, "Gagal memperbarui nama", Toast.LENGTH_SHORT).show()
                 }
@@ -133,7 +135,7 @@ class DataDiriActivity : AppCompatActivity() {
                         Toast.makeText(this, "Foto profil berhasil diperbarui", Toast.LENGTH_SHORT).show()
                         val bitmap = BitmapFactory.decodeFile(file.absolutePath)
                         binding.profileImage.setImageBitmap(bitmap)
-                        goToHome()
+                        //goToHome()
                     } else {
                         Toast.makeText(this, "Gagal memperbarui foto profil", Toast.LENGTH_SHORT).show()
                     }
@@ -145,10 +147,5 @@ class DataDiriActivity : AppCompatActivity() {
             }
         }
     }
-    private fun goToHome() {
-        val intent = Intent(this, ProfileFragment::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
-        finish()
-    }
 }
+
