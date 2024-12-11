@@ -42,7 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Label: Disease Name"
-        android:textColor="@color/green"
+        android:textColor="@color/red"
+        android:fontFamily="@font/popreg"
         android:textSize="16sp"
         android:textStyle="bold" />
     </LinearLayout>

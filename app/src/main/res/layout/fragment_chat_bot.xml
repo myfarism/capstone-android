@@ -28,6 +28,7 @@
         android:text="Chat dengan Powie yuk !"
         android:textColor="@color/black"
         android:textSize="20dp"
+        android:fontFamily="@font/popreg"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

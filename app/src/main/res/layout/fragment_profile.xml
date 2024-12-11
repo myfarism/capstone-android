@@ -52,6 +52,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/name"
+            android:textColor="@color/black"
+            android:fontFamily="@font/popreg"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -90,6 +92,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="23dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/popreg"
                 android:text="Edit Profil"
                 android:textSize="20dp"
                 app:layout_constraintStart_toEndOf="@id/imageViewDataDiri"
@@ -133,6 +137,8 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="23dp"
                 android:text="Pengaturan"
+                android:textColor="@color/black"
+                android:fontFamily="@font/popreg"
                 android:textSize="20dp"
                 app:layout_constraintStart_toEndOf="@id/imageViewEditProfile"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -175,6 +181,8 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="23dp"
                 android:text="Riwayat"
+                android:textColor="@color/black"
+                android:fontFamily="@font/popreg"
                 android:textSize="20dp"
                 app:layout_constraintStart_toEndOf="@id/imageViewRiwayat"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -203,10 +211,10 @@
 
             <ImageView
                 android:id="@+id/imageViewLogout"
-                android:layout_width="33dp"
-                android:layout_height="33dp"
-                android:layout_marginStart="43dp"
-                android:layout_marginTop="20dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="47dp"
+                android:layout_marginTop="23dp"
                 android:src="@drawable/baseline_logout_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -219,6 +227,8 @@
                 android:layout_marginTop="23dp"
                 android:text="Keluar"
                 android:textSize="20dp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/popreg"
                 app:layout_constraintStart_toEndOf="@id/imageViewLogout"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
